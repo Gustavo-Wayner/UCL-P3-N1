@@ -1,8 +1,11 @@
-﻿public static class Program
+﻿using System.Numerics;
+
+public static class Program
 {
 	public static void Main()
 	{
 		Vetor<int> v = new []{2, 3, 5, 7, 11, 13, 17, 19, 23};
+		
 
 		Console.WriteLine($"Vetor v {v}; Tamanho: {v.Len}");
 
@@ -14,5 +17,15 @@
 
 		v.PopBack();
 		Console.WriteLine($"29 removido {v}; Tamanho: {v.Len}");
+
+		Console.WriteLine($"O item no indice 2 do vetor é: {v[2]}");
+
+		v[2] = 100;
+		Console.WriteLine($"O item no indice 2 do vetor ({v}) agora é: {v[2]}");
+
+		int[] dataHold = v.GetData();
+		dataHold = dataHold.OrderDescending().ToArray();
+		v = dataHold;
+		Console.WriteLine(v);
 	}
 }

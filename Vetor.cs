@@ -18,7 +18,7 @@ public class Vetor<T>
 		}
 	}
 
-	private T[] GetData()
+	public T[] GetData()
 	{
 		return data!;
 	}
@@ -76,5 +76,19 @@ public class Vetor<T>
 		}
 
 		data = result;
+	}
+
+	public T this[int i]
+	{
+		get
+		{
+			if ( i < 0 || i >= Len) throw new Exception("Index Out Of Range");
+			return data![i];
+		}
+		set
+		{
+			if ( i < 0 || i >= Len) throw new Exception("Index Out Of Range");
+			data![i] = value;
+		}
 	}
 }
