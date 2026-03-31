@@ -1,4 +1,4 @@
-﻿using System.Numerics;
+﻿namespace UCL_P3_N1;
 
 public static class Program
 {

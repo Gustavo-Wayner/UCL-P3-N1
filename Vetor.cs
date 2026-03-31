@@ -1,3 +1,5 @@
+namespace UCL_P3_N1;
+
 public class Vetor<T>
 {
 	private T[]? data;
@@ -37,9 +39,14 @@ public class Vetor<T>
 
 	public override string ToString()
 	{
-		if ( data == null || data.Length == 0 ) return "{ }";
+		if ( data == null || data.Length == 0 )
+			return "{ }";
+
 		string Str = $"{{ {data[0]}";
-		for ( int i = 1; i < Len; i++ ) Str += $", {data[i]}";
+
+		for ( int i = 1; i < Len; i++ )
+			Str += $", {data[i]}";
+
 		Str += " }";
 
 		return Str;
