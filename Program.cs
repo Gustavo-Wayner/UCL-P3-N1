@@ -2,10 +2,33 @@
 
 public static class Program
 {
+	public static Vetor<Aluno> LerAlunosDoDat()
+	{
+		Vetor<Aluno> alunos = new Vetor<Aluno>();
+
+		if (File.Exists("alunos.dat"))
+		{
+			using (StreamReader reader = new("alunos.dat"))
+			{
+				string line;
+				while ((line = reader.ReadLine()) != null)
+				{
+					string[] parts = line.Split(';');
+					if (parts.Length == 2)
+					{
+						alunos.Add(new Aluno(parts[0], parts[1]));
+					}
+				}
+			}
+		}
+
+		return alunos;
+	}
+
 	public static void Main()
 	{
-		Vetor<int> v = new []{2, 3, 5, 7, 11, 13, 17, 19, 23};
-		
+		Vetor<int> v = new[] { 2, 3, 5, 7, 11, 13, 17, 19, 23 };
+
 
 		Console.WriteLine($"Vetor v {v}; Tamanho: {v.Len}");
 
