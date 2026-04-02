@@ -21,6 +21,11 @@ namespace UCL_P3_N1
 
 		public string getCpf() => cpf;
 		public void setCpf(string _cpf) => cpf = _cpf;
+
+		public override string ToString()
+		{
+			return $"[{nome}, {cpf}]";
+		}
 	}
 
 	public class Materia

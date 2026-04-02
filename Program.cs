@@ -1,23 +1,33 @@
-﻿namespace UCL_P3_N1;
+﻿using System.Collections;
+
+namespace UCL_P3_N1;
 
 public static class Program
 {
 	public static Vetor<Aluno> LerAlunosDoDat()
 	{
+		int lineNumber = 1;
 		Vetor<Aluno> alunos = new Vetor<Aluno>();
 
-		if (File.Exists("alunos.dat"))
+		if (File.Exists(Global.AlunoDataPath))
 		{
-			using (StreamReader reader = new("alunos.dat"))
+			using (StreamReader reader = new(Global.AlunoDataPath))
 			{
 				string line;
-				while ((line = reader.ReadLine()) != null)
+				while ((line = reader.ReadLine()!) != null)
 				{
 					string[] parts = line.Split(';');
 					if (parts.Length == 2)
 					{
+						if ( parts[1].Length != 11 )
+							Console.WriteLine($"O cpf do aluno {parts[0]} na linha {lineNumber} do arquivo alunos.dat " + 
+								"parece ter sido adulterado pois não tem 11 digitos. Favor concertar antes de prosseguir " +
+								"com a execução do programa!!!"
+						);
 						alunos.Add(new Aluno(parts[0], parts[1]));
 					}
+
+					lineNumber++;
 				}
 			}
 		}
@@ -27,28 +37,47 @@ public static class Program
 
 	public static void Main()
 	{
-		Vetor<int> v = new[] { 2, 3, 5, 7, 11, 13, 17, 19, 23 };
+		Vetor<Aluno> Alunos = LerAlunosDoDat();
 
+		int input = 0;
 
-		Console.WriteLine($"Vetor v {v}; Tamanho: {v.Len}");
+		while ( input != 3)
+		{
+			input = Misc.Parse<int>("Digite o numero correspondente para selecionar uma opção\n" +
+				"1 - Matricular aluno;\n" +
+				"2 - Listar alunos;\n" +
+				"3 - Saír;\n" +
+				"->"
+			);
 
-		v.Add(29);
-		Console.WriteLine($"29 adicionado {v}; Tamanho: {v.Len}");
+			switch (input)
+			{
+				case 1:
+					Console.Write("Informe o nome do(a) aluno(a): ");
+					string nome = Console.ReadLine()!;
 
-		v.Pop(1);
-		Console.WriteLine($"3 removido {v}; Tamanho: {v.Len}");
+					Console.Write("Informe o cpf do(a) aluno(a): ");
+					string cpf = Console.ReadLine()!;
 
-		v.PopBack();
-		Console.WriteLine($"29 removido {v}; Tamanho: {v.Len}");
+					Alunos.Add(new (nome, cpf));
+				break;
 
-		Console.WriteLine($"O item no indice 2 do vetor é: {v[2]}");
+				case 2:
+					Console.WriteLine(Alunos);
+				break;
 
-		v[2] = 100;
-		Console.WriteLine($"O item no indice 2 do vetor ({v}) agora é: {v[2]}");
+				case 3: break;
 
-		int[] dataHold = v.GetData();
-		dataHold = dataHold.OrderDescending().ToArray();
-		v = dataHold;
-		Console.WriteLine(v);
+				default:
+					Console.WriteLine( "Entrada inválida!" );
+				break;
+			}
+		}
+
+		using ( StreamWriter sw = new( Global.AlunoDataPath ) )
+		{
+			foreach (Aluno aluno in Alunos.GetData() )
+				sw.WriteLine($"{aluno.getNome()};{aluno.getCpf()}");
+		}
 	}
 }
