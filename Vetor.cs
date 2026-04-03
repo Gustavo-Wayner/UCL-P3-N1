@@ -1,6 +1,9 @@
 namespace UCL_P3_N1;
 
-//Classe para criar uma lista capaz de se expandir e diminuir dinâmicamente
+/// <summary>
+/// Classe para criar uma lista capaz de se expandir e diminuir dinâmicamente
+/// </summary>
+/// <typeparam name="T"></typeparam>
 public class Vetor<T>
 {
 	//dados do vetor

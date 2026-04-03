@@ -52,18 +52,13 @@ namespace UCL_P3_N1
 
 	public class Materia
 	{
-		int codigo;
 		string nome;
 
-
-		public Materia(int _codigo, string _nome)
+		public Materia(string _nome)
 		{
-			codigo = _codigo;
 			nome = _nome;
 		}
 
-		public int getCodigo() => codigo;
-		public void setCodigo(int _codigo) => codigo = _codigo;
 
 		public string getNome() => nome;
 		public void setNome(string _nome) => nome = _nome;

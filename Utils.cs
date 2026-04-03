@@ -1,3 +1,4 @@
+using UCL_P3_N1;
 public static class Misc
 {
 	public enum State
@@ -38,4 +39,35 @@ public static class Misc
 		State.ADeterminar => "A determinar",
 		_ => throw new NotImplementedException()
 	};
+
+	public static Vetor<Aluno> LerAlunosDoDat()
+	{
+		int lineNumber = 1;
+		Vetor<Aluno> alunos = new Vetor<Aluno>();
+
+		if (File.Exists(Global.AlunoDataPath))
+		{
+			using (StreamReader reader = new(Global.AlunoDataPath))
+			{
+				string line;
+				while ((line = reader.ReadLine()!) != null)
+				{
+					string[] parts = line.Split(';');
+					if (parts.Length == 2)
+					{
+						if ( parts[1].Length != 11 )
+							Console.WriteLine($"O cpf do aluno {parts[0]} na linha {lineNumber} do arquivo alunos.dat " + 
+								"parece ter sido adulterado pois não tem 11 digitos. Favor concertar antes de prosseguir " +
+								"com a execução do programa!!!"
+						);
+						alunos.Add(new Aluno(parts[0], parts[1]));
+					}
+
+					lineNumber++;
+				}
+			}
+		}
+
+		return alunos;
+	}
 }
