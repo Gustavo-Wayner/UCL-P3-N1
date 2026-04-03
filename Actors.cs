@@ -16,12 +16,34 @@ namespace UCL_P3_N1
 			cpf = _cpf;
 		}
 
+		/// <summary>
+		/// Retorna o nome do aluno
+		/// </summary>
+		/// <returns></returns>
 		public string getNome() => nome;
+
+		/// <summary>
+		/// Altera o nome do aluno
+		/// </summary>
+		/// <param name="_nome">Variável correspondente ao novo nome</param>
 		public void setNome(string _nome) => nome = _nome;
 
+		/// <summary>
+		/// Retorna o cpf do aluno
+		/// </summary>
+		/// <returns></returns>
 		public string getCpf() => cpf;
+
+		/// <summary>
+		/// Altera o cpf do aluno
+		/// </summary>
+		/// <param name="_cpf">Variável correspondente ao novo cpf</param>
 		public void setCpf(string _cpf) => cpf = _cpf;
 
+		/// <summary>
+		/// Converte um Aluno em string
+		/// </summary>
+		/// <returns>Retorna o aluno em forma de string entre colchetes</returns>
 		public override string ToString()
 		{
 			return $"[{nome}, {cpf}]";
