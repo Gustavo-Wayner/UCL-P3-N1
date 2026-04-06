@@ -7,6 +7,8 @@ public static class Program
 	public static void Main()
 	{
 		Vetor<Aluno> Alunos = LerAlunosDoDat();
+		Vetor<Materia> Materias = LerMateriasDoDat();
+		Vetor<Matricula> Matriculas = LerMatriculasDoDat();
 
 		int input = 0;
 
@@ -38,17 +40,15 @@ public static class Program
 							Console.Write("Informe o nome do(a) aluno(a): ");
 							string nome = Console.ReadLine()!;
 
-							Console.Write("Informe o cpf do(a) aluno(a): ");
-							string cpf = Console.ReadLine()!;
-
-							while ( cpf.Length != 11)
+							int idade = (int)Parse<uint>("Informe o cpf do(a) aluno(a): ", "Idade deve ser um numero natural!!!");
+/* 
+							while ( idade < 0)
 							{	
-								Console.WriteLine("O cpf deve ter 11 digitos!!!");
-								Console.Write("Informe o cpf do(a) aluno(a): ");
-								cpf = Console.ReadLine()!;
-							}
+								Console.WriteLine("Idade deve ser um numero natural!!!");
+								idade = Parse<int>("Informe o cpf do(a) aluno(a): ");
+							} */
 
-							Alunos.Add(new (nome, cpf));
+							Alunos.Add(new (nome, idade));
 						break;
 
 						case 2:
@@ -63,35 +63,35 @@ public static class Program
 					}
 					input = 0;
 				break;
-			}
-			switch (input)
-			{
-				case 1:
-					Console.Write("Informe o nome do(a) aluno(a): ");
-					string nome = Console.ReadLine()!;
 
-					Console.Write("Informe o cpf do(a) aluno(a): ");
-					string cpf = Console.ReadLine()!;
+				case 2: break;
+				case 3:
+					using ( StreamWriter sw = new( Global.AlunoDataPath ) )
+					{
+						foreach (Aluno aluno in Alunos.GetData() )
+							sw.WriteLine($"{aluno.getNome()};{aluno.getIdade()}");
+					}
 
-					Alunos.Add(new (nome, cpf));
+					using ( StreamWriter sw = new( Global.MateriaDataPath ) )
+					{
+						foreach (Materia mat in Materias.GetData() )
+							sw.WriteLine($"{mat.getNome()};{mat.getNotaMin()}");
+					}
+
+					using ( StreamWriter sw = new( Global.MateriaDataPath ) )
+					{
+						foreach (Materia mat in Materias.GetData() )
+							sw.WriteLine($"{mat.getNome()};{mat.getNotaMin()}");
+					}
 				break;
-
-				case 2:
-					Console.WriteLine(Alunos);
-				break;
-
-				case 3: break;
-
-				default:
-					Console.WriteLine( "Entrada inválida!" );
-				break;
+				case 4: break;
 			}
 		}
 
 		using ( StreamWriter sw = new( Global.AlunoDataPath ) )
 		{
 			foreach (Aluno aluno in Alunos.GetData() )
-				sw.WriteLine($"{aluno.getNome()};{aluno.getCpf()}");
+				sw.WriteLine($"{aluno.getNome()};{aluno.getIdade()}");
 		}
 	}
 }
