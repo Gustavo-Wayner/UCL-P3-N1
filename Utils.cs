@@ -59,6 +59,14 @@ public static class Misc
 				while ((line = reader.ReadLine()!) != null)
 				{
 					string[] parts = line.Split(';');
+					for (int col = 0; col < parts.Length; col++)
+					{
+						if ( string.IsNullOrEmpty( parts[col] ) || string.IsNullOrWhiteSpace( parts[col] ) )
+						{
+							Console.WriteLine($"A entrada da coluna {col+1} linha {lineNumber} está vazia. Favor concertar antes de prosseguir");
+							throw new Exception("EntradaFaltando");
+						}
+					}
 					if (parts.Length == 3)
 					{
 						// Erro para idade negativa
@@ -71,14 +79,22 @@ public static class Misc
 							}
 						}
 
-						// Erro para valor em idade que não pode ser convertido em numero
+						// Erro para valor em idade que não pode ser convertida em numero
 						else
 						{
 							Console.WriteLine($"O valor da idade de {parts[0]} em alunos.dat (segunda coluna, linha {lineNumber}) não é um numero natural. Favor corrigir antes de prosseguir");
 							throw new Exception("IdadeNaoENumeroNatural");
 						}
 
-						alunos.Add(new Aluno(parts[0], idade));
+						// Erro para matricula que não pode ser convertido em numero
+						if ( !int.TryParse(parts[1], out int matricula ) )
+						{
+							Console.WriteLine($"O valor da idade de {parts[0]} em alunos.dat (segunda coluna, linha {lineNumber}) não é um numero natural. Favor corrigir antes de prosseguir");
+							throw new Exception("IdadeNaoENumeroNatural");
+						}
+
+						alunos.Add(new Aluno(parts[0], idade, matricula));
+
 					}
 					else
 					{
@@ -110,9 +126,28 @@ public static class Misc
 				while ((line = reader.ReadLine()!) != null)
 				{
 					string[] parts = line.Split(';');
-					if (parts.Length == 2)
+					if (parts.Length == 3)
 					{
-						mat.Add(new Materia(parts[0], parts[1]));
+						double nota_min;
+
+						// erro para a nota minima estar fora do range de 0-10
+						if (double.TryParse(parts[1], out nota_min))
+						{
+							if ( nota_min < 0 || nota_min > 10 )
+							{
+								Console.WriteLine($"Nota minima (segunda coluna) da materia {parts[0]}, linha {lineNumber} do arquivo materias.dat não está entre 0 e 10!!!");
+								throw new Exception("NotaMinimaMenorQue0OuMaiorQue10");
+							}
+						}
+
+						// Erro para nota minima que não pode ser convertida em numero real positivo
+						else
+						{
+							Console.WriteLine($"Nota minima (segunda coluna) da materia {parts[0]}, linha {lineNumber} do arquivo materias.dat não pôde ser convertido para um numero!!!");
+							throw new Exception("NotaMinimaNaoENumero");
+						}
+
+						mat.Add(new Materia(parts[0], nota_min, parts[2]));
 					}
 
 					lineNumber++;

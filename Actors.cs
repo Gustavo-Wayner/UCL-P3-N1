@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel;
 
 namespace UCL_P3_N1
 {
@@ -6,14 +7,16 @@ namespace UCL_P3_N1
 	{
 		private string nome;
 		private int idade;
+		private int matricula;
 
-		public Aluno(string _nome, int _idade)
+		public Aluno(string _nome, int _idade, int _matricula)
 		{
 			if (_idade < 11)
 				throw new Exception("IdadeNegativaNaoRolaFi");
 
 			nome = _nome;
 			idade = _idade;
+			matricula = _matricula;
 		}
 
 		/// <summary>
@@ -40,13 +43,15 @@ namespace UCL_P3_N1
 		/// <param name="_idade">Variável correspondente a nova idade</param>
 		public void setIdade(int _idade) => idade = _idade;
 
+		public int getMatricula() => matricula;
+
 		/// <summary>
 		/// Converte um Aluno em string
 		/// </summary>
 		/// <returns>Retorna o aluno em forma de string entre colchetes</returns>
 		public override string ToString()
 		{
-			return $"[{nome}, {idade}]";
+			return $"[{matricula}, {nome}, {idade}]";
 		}
 	}
 
@@ -54,11 +59,13 @@ namespace UCL_P3_N1
 	{
 		string nome;
 		double nota_min;
+		int codigo;
 
-		public Materia(string _nome, int _nota_min)
+		public Materia(string _nome, double _nota_min, int _codigo)
 		{
 			nome = _nome;
 			nota_min = _nota_min;
+			codigo = _codigo;
 		}
 
 
@@ -67,6 +74,8 @@ namespace UCL_P3_N1
 
 		public double getNotaMin() => nota_min;
 		public void setNotaMin(double _nota_min) => nota_min = _nota_min;
+
+		public int getCodigo() => codigo;
 	}
 
 	public class Matricula
