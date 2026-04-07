@@ -1,4 +1,5 @@
-﻿using static Misc;
+﻿using System.Runtime.InteropServices;
+using static Misc;
 
 namespace UCL_P3_N1;
 
@@ -13,7 +14,7 @@ public static class Program
 		int input = 0;
 		bool over = false;
 
-		while ( !over )
+		while (!over)
 		{
 			input = Parse<int>("Digite o numero correspondente para selecionar uma opção\n" +
 				"1 - Listar;\n" +
@@ -23,9 +24,9 @@ public static class Program
 				"->"
 			);
 
-			switch(input)
+			switch (input)
 			{
-				// A implementar
+				// TODO: A implementar
 				case 1: break;
 
 				case 2:
@@ -43,85 +44,113 @@ public static class Program
 					{
 						case 1:
 							Console.Write("Informe o nome do(a) aluno(a): ");
-							string nome = Console.ReadLine()!;
+							string nome_aluno = Console.ReadLine()!;
 
-							int idade = (int)Parse<uint>("Informe o cpf do(a) aluno(a): ", "Idade deve ser um numero natural!!!");
-/* 
+							int idade = (int)Parse<uint>("Informe a idade do(a) aluno(a): ", "Idade deve ser um numero natural!!!");
+
+							// TODO: Confirmar ncessidade de validação a parte da interna da função Parse<T>
+							/*
 							while ( idade < 0)
-							{	
+							{
 								Console.WriteLine("Idade deve ser um numero natural!!!");
-								idade = Parse<int>("Informe o cpf do(a) aluno(a): ");
+								idade = Parse<int>("Informe a idade do(a) aluno(a): ");
 							} */
-							
+
 							int matricula;
 							bool clone = false;
 							do
 							{
 								clone = false;
-								matricula = Parse<int>($"Informe um codigo de matricula para {nome}: ", "Matricula deve ser um numero!!!");
+								matricula = Parse<int>($"Informe um codigo de matricula para {nome_aluno}: ", "Matricula deve ser um numero!!!");
 
-								foreach ( Aluno aluno in Alunos.GetData() )
+								foreach (Aluno aluno in Alunos.GetData())
 								{
-									if ( aluno.getMatricula() == matricula )
+									if (aluno.getMatricula() == matricula)
 									{
 										Console.WriteLine("Matricula repetida!!!");
 										clone = true;
 									}
 								}
-							} while ( clone );
+							} while (clone);
 
-							Alunos.Add(new (nome, idade, matricula));
+							Alunos.Add(new(nome_aluno, idade, matricula));
 							OrderAlunos(ref Alunos);
-						break;
+							break;
 
 						// Em implementação
 						case 2:
-						
-						break;
+							bool cod_repetido = false;
+							string nome_materia;
+							double nota_min;
+							int codigo;
 
-						// A implementar
+							Console.Write("Digite o nome da materia: ");
+							nome_materia = Console.ReadLine()!;
+							nota_min = Parse<double>("Informe a nota minima para a materia: ");
+
+							do
+							{
+								codigo = Parse<int>("Informe o codigo da materia: ");
+
+								foreach (Materia materia in Materias.GetData())
+								{
+									if (materia.getCodigo() == codigo)
+									{
+										Console.WriteLine("Codigo repetido!!!");
+										cod_repetido = true;
+										break;
+									}
+								}
+							} while (!cod_repetido);
+
+							Materias.Add(new(nome_materia, nota_min, codigo));
+
+							OrderMaterias(ref Materias);
+							break;
+
+						// TODO: A implementar
 						case 3: break;
 
-						// A implementar
+						// TODO: A implementar
 						case 4: break;
 
 						// Só isso mesmo
 						case 5: break;
 
 						default:
-							Console.WriteLine( "Entrada inválida!" );
-						break;
+							Console.WriteLine("Entrada inválida!");
+							break;
 					}
 					// Segunda tela acaba
-				break;
+					break;
 
 				case 3:
-					using ( StreamWriter sw = new( Global.AlunoDataPath ) )
+					using (StreamWriter sw = new(Global.AlunoDataPath))
 					{
-						foreach (Aluno aluno in Alunos.GetData() )
+						foreach (Aluno aluno in Alunos.GetData())
 							sw.WriteLine($"{aluno.getNome()};{aluno.getIdade()}");
 					}
 
-					using ( StreamWriter sw = new( Global.MateriaDataPath ) )
+					using (StreamWriter sw = new(Global.MateriaDataPath))
 					{
-						foreach (Materia mat in Materias.GetData() )
+						foreach (Materia mat in Materias.GetData())
 							sw.WriteLine($"{mat.getNome()};{mat.getNotaMin()}");
 					}
 
-					using ( StreamWriter sw = new( Global.MateriaDataPath ) )
+					using (StreamWriter sw = new(Global.MateriaDataPath))
 					{
-						foreach (Materia mat in Materias.GetData() )
+						foreach (Materia mat in Materias.GetData())
 							sw.WriteLine($"{mat.getNome()};{mat.getNotaMin()}");
 					}
-				break;
+					break;
 
 				case 4:
 					over = true;
-				break;
+					break;
 
 				default:
 					Console.WriteLine("Entrada inválida!!!");
-				break;
+					break;
 			}
 		}
 	}

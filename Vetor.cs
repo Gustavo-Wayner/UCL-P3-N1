@@ -13,10 +13,10 @@ public class Vetor<T>
 		data = new T[0];
 	}
 
-	public Vetor( T[] _data ) => data = _data;
+	public Vetor(T[] _data) => data = _data;
 
 	//Imprementacão de inicialização via coleções (chaves {x, y, z...})
-	public static implicit operator Vetor<T>( T[] array ) => new Vetor<T>(array);
+	public static implicit operator Vetor<T>(T[] array) => new Vetor<T>(array);
 
 	/// <summary>
 	/// Retorna o cumprimento do vetor e 0 se for nulo ( ou tiver cumprimento 0 )
@@ -25,7 +25,7 @@ public class Vetor<T>
 	{
 		get
 		{
-			if ( data != null ) return data.Length;
+			if (data != null) return data.Length;
 			return 0;
 		}
 	}
@@ -33,10 +33,7 @@ public class Vetor<T>
 	/// <summary>
 	/// Retorna a array interna da class vetor que guarda seus dados
 	/// </summary>
-	public T[] GetData()
-	{
-		return data!;
-	}
+	public T[] GetData() => data!;
 
 	/// <summary>
 	/// Adiciona um elemento ao final do vetor
@@ -44,8 +41,8 @@ public class Vetor<T>
 	/// <param name="element">Elmento a ser adicionado</param>
 	public void Add(T element)
 	{
-		T[] copy = new T[Len+1];
-		for ( int i = 0; i < Len; i++ )
+		T[] copy = new T[Len + 1];
+		for (int i = 0; i < Len; i++)
 		{
 			copy[i] = data![i];
 		}
@@ -60,12 +57,12 @@ public class Vetor<T>
 	/// <returns>Retorna o vetor em forma de string entre chaves, ou apénas {} se o vetor estiver vazio </returns>
 	public override string ToString()
 	{
-		if ( data == null || data.Length == 0 )
+		if (data == null || data.Length == 0)
 			return "{ }";
 
 		string Str = $"{{ {data[0]}";
 
-		for ( int i = 1; i < Len; i++ )
+		for (int i = 1; i < Len; i++)
 			Str += $", {data[i]}";
 
 		Str += " }";
@@ -78,19 +75,18 @@ public class Vetor<T>
 	/// </summary>
 	/// <param name="index">Índice a ser removido</param>
 	/// <exception cref="IndexOutOfRangeException">Retorna erros quando o indice está fora do alcançe do vetor</exception>
-	public void Pop( int index )
+	public void Pop(int index)
 	{
-		if ( index < 0 || index >= Len ) throw new IndexOutOfRangeException();
+		if (index < 0 || index >= Len) throw new IndexOutOfRangeException();
 
-		T[] result = new T[Len-1];
+		T[] result = new T[Len - 1];
 
 		int j = 0;
-		for( int i = 0; j < Len-1; i++ )
+		for (int i = 0; j < Len - 1; i = ++j)
 		{
-			if ( i == index ) i++;
+			if (i == index) i++;
 
 			result[j] = data![i];
-			j++;
 		}
 
 		data = result;
@@ -101,7 +97,7 @@ public class Vetor<T>
 	/// </summary>
 	public void PopBack()
 	{
-		Pop(Len-1);
+		Pop(Len - 1);
 	}
 
 	/// <summary>
@@ -114,12 +110,12 @@ public class Vetor<T>
 	{
 		get
 		{
-			if ( i < 0 || i >= Len) throw new IndexOutOfRangeException("Indice fora de alcançe");
+			if (i < 0 || i >= Len) throw new IndexOutOfRangeException("Indice fora de alcançe");
 			return data![i];
 		}
 		set
 		{
-			if ( i < 0 || i >= Len) throw new IndexOutOfRangeException("Indice fora de alcançe");
+			if (i < 0 || i >= Len) throw new IndexOutOfRangeException("Indice fora de alcançe");
 			data![i] = value;
 		}
 	}
