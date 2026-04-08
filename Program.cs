@@ -109,83 +109,8 @@ public static class Program
 
 						// TODO: Implementando
 						case 3:
-							Console.WriteLine("Informe o nome da materia em que deseja matricular o aluno:");
-							string nome_materia_matricula = Console.ReadLine()!;
-							Materia materia_matricula = new("", 0, 0);
-
-							bool found_materia = false;
-							while (!found_materia)
-							{
-								Materia[] materias_achadas = Materias.GetData().Where(x => x.getNome() == nome_materia_matricula).ToArray();
-								if (materias_achadas.Length == 0)
-								{
-									Console.WriteLine("Materia não encontrada!");
-									Console.WriteLine("Informe o nome da materia em que deseja matricular o aluno:");
-									nome_materia_matricula = Console.ReadLine()!;
-								}
-								else if (materias_achadas.Length > 1)
-								{
-									Console.WriteLine($"Mais de uma materia chamada {nome_materia_matricula} encontrada!");
-									while (true)
-									{
-										int cod_materia_matricula = Parse<int>("Informe o código da materia: ");
-										if (materias_achadas.Any(x => x.getCodigo() == cod_materia_matricula))
-										{
-											Materia materia_selecionada = materias_achadas.First(x => x.getCodigo() == cod_materia_matricula);
-											nome_materia_matricula = materia_selecionada.getNome();
-
-											materia_matricula = materias_achadas[0];
-											found_materia = true;
-											break;
-										}
-										else
-										{
-											Console.WriteLine($"Materia com código {cod_materia_matricula} não encontrada!");
-										}
-									}
-								}
-								else
-								{
-									materia_matricula = materias_achadas[0];
-									found_materia = true;
-								}
-							}
-
-							Console.WriteLine("Informe o nome do aluno:");
-							string nome_aluno_matricula = Console.ReadLine()!;
-							Aluno aluno_matricula = new("", 0, 0);
-
-							bool found_aluno = false;
-							while (!found_aluno)
-							{
-								Aluno[] alunos_achados = Alunos.GetData().Where(x => x.getNome() == nome_aluno_matricula).ToArray();
-								if (alunos_achados.Length == 0)
-								{
-									Console.WriteLine($"Aluno com nome {nome_aluno_matricula} não encontrado!");
-									Console.WriteLine("Informe o nome do aluno:");
-									nome_aluno_matricula = Console.ReadLine()!;
-								}
-								else if (alunos_achados.Length > 1)
-								{
-									Console.WriteLine($"Mais de um aluno encontrado com o nome {nome_aluno_matricula}!");
-									int mat_aluno = Parse<int>("Informe a matrícula do aluno: ");
-
-									if (alunos_achados.Any(x => x.getMatricula() == mat_aluno))
-									{
-										nome_aluno_matricula = alunos_achados.First(x => x.getMatricula() == mat_aluno).getNome();
-
-										aluno_matricula = alunos_achados.First(x => x.getMatricula() == mat_aluno);
-										found_aluno = true;
-									}
-									else
-										Console.WriteLine("Matrícula não encontrada!");
-								}
-								else
-								{
-									aluno_matricula = alunos_achados[0];
-									found_aluno = true;
-								}
-							}
+							Materia materia_matricula = SearchMateria(ref Materias);
+							Aluno aluno_matricula = SearchAluno(ref Alunos);
 
 							Matriculas.Add(new Matricula(ref aluno_matricula, ref materia_matricula));
 							OrderMatriculas(ref Matriculas);
@@ -194,10 +119,12 @@ public static class Program
 
 						// TODO: A implementar
 						case 4:
+							Matricula? matricula_selecionada = null;
 							bool N1OrN2 = false;
+							int N;
 							do
 							{
-								int N = Parse<int>("Deseja aplicar a nota a: \n" +
+								N = Parse<int>("Deseja aplicar a nota a: \n" +
 									"1 - N1\n" +
 									"2 - N2\n" +
 									"?->"
@@ -207,83 +134,30 @@ public static class Program
 								else Console.WriteLine("Entrada inválida!");
 							} while (!N1OrN2);
 
-							Console.WriteLine("Informe o nome da materia em que deseja matricular o aluno:");
-							string nome_materia_nota = Console.ReadLine()!;
-							Materia materia_nota = new("", 0, 0);
 
-							bool found_materia_nota = false;
-							while (!found_materia_nota)
+							Materia materia_nota = SearchMateria(ref Materias);
+							Aluno aluno_nota = SearchAluno(ref Alunos);
+
+							matricula_selecionada = Matriculas.GetData().Where(x => x.GetAluno().getMatricula() == aluno_nota.getMatricula() && x.GetMateria().getCodigo() == materia_nota.getCodigo()).FirstOrDefault();
+							if (matricula_selecionada != null)
 							{
-								Materia[] materias_achadas = Materias.GetData().Where(x => x.getNome() == nome_materia_nota).ToArray();
-								if (materias_achadas.Length == 0)
-								{
-									Console.WriteLine("Materia não encontrada!");
-									Console.WriteLine("Informe o nome da materia em que deseja matricular o aluno:");
-									nome_materia_nota = Console.ReadLine()!;
-								}
-								else if (materias_achadas.Length > 1)
-								{
-									Console.WriteLine($"Mais de uma materia chamada {nome_materia_nota} encontrada!");
-									while (true)
-									{
-										int cod_materia_nota = Parse<int>("Informe o código da materia: ");
-										if (materias_achadas.Any(x => x.getCodigo() == cod_materia_nota))
-										{
-											Materia materia_selecionada = materias_achadas.First(x => x.getCodigo() == cod_materia_nota);
-											nome_materia_nota = materia_selecionada.getNome();
-
-											materia_nota = materias_achadas[0];
-											found_materia_nota = true;
-											break;
-										}
-										else
-										{
-											Console.WriteLine($"Materia com código {cod_materia_nota} não encontrada!");
-										}
-									}
-								}
-								else
-								{
-									materia_matricula = materias_achadas[0];
-									found_materia = true;
-								}
+								Console.WriteLine("Não ha uma matrícula para esse aluno nessa materia!");
+								break;
 							}
 
-							Console.WriteLine("Informe o nome do aluno:");
-							string nome_aluno_nota = Console.ReadLine()!;
-							Aluno aluno_nota = new("", 0, 0);
+							double nota = Parse<double>("Informe a nota: ");
 
-							bool found_aluno_nota = false;
-							while (!found_aluno_nota)
+							if (N == 1)
 							{
-								Aluno[] alunos_achados = Alunos.GetData().Where(x => x.getNome() == nome_aluno_nota).ToArray();
-								if (alunos_achados.Length == 0)
-								{
-									Console.WriteLine($"Aluno com nome {nome_aluno_nota} não encontrado!");
-									Console.WriteLine("Informe o nome do aluno:");
-									nome_aluno_nota = Console.ReadLine()!;
-								}
-								else if (alunos_achados.Length > 1)
-								{
-									Console.WriteLine($"Mais de um aluno encontrado com o nome {nome_aluno_nota}!");
-									int mat_aluno = Parse<int>("Informe a matrícula do aluno: ");
-
-									if (alunos_achados.Any(x => x.getMatricula() == mat_aluno))
-									{
-										nome_aluno_matricula = alunos_achados.First(x => x.getMatricula() == mat_aluno).getNome();
-
-										aluno_matricula = alunos_achados.First(x => x.getMatricula() == mat_aluno);
-										found_aluno = true;
-									}
-									else
-										Console.WriteLine("Matrícula não encontrada!");
-								}
-								else
-								{
-									aluno_matricula = alunos_achados[0];
-									found_aluno = true;
-								}
+								matricula_selecionada!.SetN1(nota);
 							}
+							else if (N == 2)
+							{
+								matricula_selecionada!.SetN2(nota);
+							}
+
+							matricula_selecionada!.SetMedia((matricula_selecionada!.GetN1() + matricula_selecionada!.GetN2()) / 2);
+							matricula_selecionada!.SetEstado(matricula_selecionada!.GetMedia() >= materia_nota.getNotaMin() ? Misc.State.Aprovado : Misc.State.Reprovado);
 
 							break;
 
@@ -301,19 +175,19 @@ public static class Program
 					using (StreamWriter sw = new(Global.AlunoDataPath))
 					{
 						foreach (Aluno aluno in Alunos.GetData())
-							sw.WriteLine($"{aluno.getNome()};{aluno.getIdade()}");
+							sw.WriteLine($"{aluno.getNome()};{aluno.getIdade()};{aluno.getMatricula()}");
 					}
 
 					using (StreamWriter sw = new(Global.MateriaDataPath))
 					{
 						foreach (Materia mat in Materias.GetData())
-							sw.WriteLine($"{mat.getNome()};{mat.getNotaMin()}");
+							sw.WriteLine($"{mat.getNome()};{mat.getNotaMin()};{mat.getCodigo()}");
 					}
 
 					using (StreamWriter sw = new(Global.MateriaDataPath))
 					{
-						foreach (Materia mat in Materias.GetData())
-							sw.WriteLine($"{mat.getNome()};{mat.getNotaMin()}");
+						foreach (Matricula mat in Matriculas.GetData())
+							sw.WriteLine($"{mat.GetAluno().getMatricula()};{mat.GetMateria().getCodigo()};{mat.GetN1()};{mat.GetN2()};{mat.GetMedia()};{mat.GetEstado()}");
 					}
 					break;
 

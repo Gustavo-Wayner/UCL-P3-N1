@@ -85,6 +85,7 @@ namespace UCL_P3_N1
 
 		private double n1;
 		private double n2;
+		private double media;
 		private Misc.State estado;
 
 		/// <summary>
@@ -95,16 +96,28 @@ namespace UCL_P3_N1
 		/// <param name="_n1">Primeira nota (Opcional); Valor padrão: 0</param>
 		/// <param name="_n2">Segunda nota (Opcional); Valor padrão: 0</param>
 		/// <param name="_estado">Estado (Aprovado, Reprovado, A definir)(Opcional); Valor padrão: ADefinir</param>
-		public Matricula(ref Aluno _aluno, ref Materia _materia, double _n1 = 0, double _n2 = 0, Misc.State _estado = Misc.State.ADeterminar)
+		/// <param name="_media">Média (Opcional); Valor padrão: 0</param>
+		public Matricula(ref Aluno _aluno, ref Materia _materia, double _n1 = 0, double _n2 = 0, Misc.State _estado = Misc.State.ADeterminar, double _media = 0)
 		{
 			aluno = _aluno;
 			materia = _materia;
 			n1 = _n1;
 			n2 = _n2;
 			estado = _estado;
+			media = _media;
 		}
 
 		public Aluno GetAluno() => aluno;
 		public Materia GetMateria() => materia;
+
+		public double GetN1() => n1;
+		public double GetN2() => n2;
+		public Misc.State GetEstado() => estado;
+		public double GetMedia() => media;
+
+		public void SetN1(double _n1) => n1 = _n1;
+		public void SetN2(double _n2) => n2 = _n2;
+		public void SetEstado(Misc.State _estado) => estado = _estado;
+		public void SetMedia(double _media) => media = _media;
 	}
 }
