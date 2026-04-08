@@ -16,6 +16,13 @@ public static class Misc
 		return Alunos.Where(x => x.getMatricula() == matricula).ToArray();
 	}
 
+	public static Materia[] GetMateriasByCodigo(ref Vetor<Materia> MATERIAS, int codigo)
+	{
+		Materia[] Materias = MATERIAS.GetData();
+		return Materias.Where(x => x.getCodigo() == codigo).ToArray();
+	}
+
+
 	/// <summary>
 	/// Busca um aluno pelo nome ou matrícula no vetor de alunos.
 	/// </summary>
