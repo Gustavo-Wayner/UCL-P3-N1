@@ -1,5 +1,4 @@
-﻿using System.Runtime.InteropServices;
-using static Misc;
+﻿using static Misc;
 
 namespace UCL_P3_N1;
 
@@ -26,7 +25,6 @@ public static class Program
 
 			switch (input)
 			{
-				// TODO: A implementar
 				case 1: break;
 
 				case 2:
@@ -120,7 +118,6 @@ public static class Program
 
 							break;
 
-						// TODO: A implementar
 						case 4:
 							Matricula? matricula_selecionada = null;
 							bool N1OrN2 = false;
