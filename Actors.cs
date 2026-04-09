@@ -11,7 +11,7 @@ namespace UCL_P3_N1
 
 		public Aluno(string _nome, int _idade, int _matricula)
 		{
-			if (_idade < 11)
+			if (_idade < 0)
 				throw new Exception("IdadeNegativaNaoRolaFi");
 
 			nome = _nome;
@@ -69,12 +69,34 @@ namespace UCL_P3_N1
 		}
 
 
+		/// <summary>
+		/// Obtém o nome da matéria
+		/// </summary>
+		/// <returns>Retorna o nome da matéria</returns>
 		public string getNome() => nome;
+
+		/// <summary>
+		/// Define o nome da matéria
+		/// </summary>
+		/// <param name="_nome">Nome da matéria</param>
 		public void setNome(string _nome) => nome = _nome;
 
+		/// <summary>
+		/// Obtém a nota mínima da matéria
+		/// </summary>
+		/// <returns>Retorna a nota mínima da matéria</returns>
 		public double getNotaMin() => nota_min;
+
+		/// <summary>
+		/// Define a nota mínima da matéria
+		/// </summary>
+		/// <param name="_nota_min">Nota mínima da matéria</param>
 		public void setNotaMin(double _nota_min) => nota_min = _nota_min;
 
+		/// <summary>
+		/// Obtém o código da matéria
+		/// </summary>
+		/// <returns>Retorna o código da matéria</returns>
 		public int getCodigo() => codigo;
 	}
 
@@ -86,7 +108,7 @@ namespace UCL_P3_N1
 		private double n1;
 		private double n2;
 		private double media;
-		private Misc.State estado;
+		private string estado;
 
 		/// <summary>
 		/// Construtor da classe Matricula
@@ -97,7 +119,7 @@ namespace UCL_P3_N1
 		/// <param name="_n2">Segunda nota (Opcional); Valor padrão: 0</param>
 		/// <param name="_estado">Estado (Aprovado, Reprovado, A definir)(Opcional); Valor padrão: ADefinir</param>
 		/// <param name="_media">Média (Opcional); Valor padrão: 0</param>
-		public Matricula(ref Aluno _aluno, ref Materia _materia, double _n1 = 0, double _n2 = 0, Misc.State _estado = Misc.State.ADeterminar, double _media = 0)
+		public Matricula(ref Aluno _aluno, ref Materia _materia, double _n1, double _n2, string _estado = "A definir", double _media = 0)
 		{
 			aluno = _aluno;
 			materia = _materia;
@@ -107,17 +129,77 @@ namespace UCL_P3_N1
 			media = _media;
 		}
 
+		/// <summary>
+		/// Obtém o aluno da matrícula
+		/// </summary>
+		/// <returns>Retorna uma referência direta a uma instância de classe Aluno</returns>
 		public Aluno GetAluno() => aluno;
+
+		/// <summary>
+		/// Obtém a matéria da matrícula
+		/// </summary>
+		/// <returns>Retorna uma referência direta a uma instância de classe Materia</returns>
 		public Materia GetMateria() => materia;
 
+		/// <summary>
+		/// Obtém a primeira nota
+		/// </summary>
+		/// <returns>Retorna a primeira nota</returns>
 		public double GetN1() => n1;
+
+		/// <summary>
+		/// Obtém a segunda nota
+		/// </summary>
+		/// <returns>Retorna a segunda nota</returns>
 		public double GetN2() => n2;
-		public Misc.State GetEstado() => estado;
+
+		/// <summary>
+		/// Obtém o estado
+		/// </summary>
+		/// <returns>Retorna o estado</returns>
+		public string GetEstado() => estado;
+
+		/// <summary>
+		/// Obtém a média
+		/// </summary>
+		/// <returns>Retorna a média</returns>
 		public double GetMedia() => media;
 
+		/// <summary>
+		/// Define a primeira nota
+		/// </summary>
+		/// <param name="_n1">A primeira nota</param>
 		public void SetN1(double _n1) => n1 = _n1;
+
+		/// <summary>
+		/// Define a segunda nota
+		/// </summary>
+		/// <param name="_n2">A segunda nota</param>
 		public void SetN2(double _n2) => n2 = _n2;
-		public void SetEstado(Misc.State _estado) => estado = _estado;
+
+		/// <summary>
+		/// Define o estado
+		///
+		/// _estado == 0: Aprovado
+		/// _estado == 1: Reprovado
+		/// _estado < 0 ou _estado > 1 : A definir
+		/// </summary>
+		/// <param name="_estado">O estado</param>
+		public void SetEstado(int _estado)
+		{
+			switch (_estado)
+			{
+				case 0:
+					estado = "Aprovado";
+					break;
+				case 1:
+					estado = "Reprovado";
+					break;
+				default:
+					estado = "A definir";
+					break;
+			}
+		}
 		public void SetMedia(double _media) => media = _media;
 	}
 }

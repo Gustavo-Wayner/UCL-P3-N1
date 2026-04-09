@@ -1,4 +1,5 @@
 using System.Runtime.CompilerServices;
+using System.Runtime.InteropServices;
 using System.Security.Cryptography.X509Certificates;
 using UCL_P3_N1;
 public static class Misc
@@ -10,16 +11,14 @@ public static class Misc
 		ADeterminar
 	}
 
-	public static Aluno[] GetAlunosByMatricula(ref Vetor<Aluno> ALUNOS, int matricula)
+	public static Aluno[] GetAlunosByMatricula(ref Aluno[] ALUNOS, int matricula)
 	{
-		Aluno[] Alunos = ALUNOS.GetData();
-		return Alunos.Where(x => x.getMatricula() == matricula).ToArray();
+		return ALUNOS.Where(x => x.getMatricula() == matricula).ToArray();
 	}
 
-	public static Materia[] GetMateriasByCodigo(ref Vetor<Materia> MATERIAS, int codigo)
+	public static Materia[] GetMateriasByCodigo(ref Materia[] MATERIAS, int codigo)
 	{
-		Materia[] Materias = MATERIAS.GetData();
-		return Materias.Where(x => x.getCodigo() == codigo).ToArray();
+		return MATERIAS.Where(x => x.getCodigo() == codigo).ToArray();
 	}
 
 
@@ -83,7 +82,7 @@ public static class Misc
 
 		bool found_materia = false;
 
-		Console.WriteLine("Informe o nome da materia em que deseja matricular o aluno:");
+		Console.WriteLine("Informe o nome da materia:");
 		string nome_materia = Console.ReadLine()!;
 
 		while (!found_materia)
@@ -92,7 +91,7 @@ public static class Misc
 			if (materias_achadas.Length == 0)
 			{
 				Console.WriteLine("Materia não encontrada!");
-				Console.WriteLine("Informe o nome da materia em que deseja matricular o aluno:");
+				Console.WriteLine("Informe o nome da materia:");
 				nome_materia = Console.ReadLine()!;
 			}
 			else if (materias_achadas.Length > 1)
@@ -191,7 +190,7 @@ public static class Misc
 							if (idade < 0)
 							{
 								Console.WriteLine($"O valor da idade de {parts[0]} em alunos.dat (segunda coluna, linha {lineNumber}) não é um numero natural. Favor corrigir antes de prosseguir");
-								throw new Exception("IdadeNegativaNaoPodeFi");
+								throw new Exception("IdadeNegativaPodeNaoFi");
 							}
 						}
 
@@ -234,9 +233,9 @@ public static class Misc
 		int lineNumber = 1;
 		Vetor<Materia> mat = new Vetor<Materia>();
 
-		if (File.Exists(Global.AlunoDataPath))
+		if (File.Exists(Global.MateriaDataPath))
 		{
-			using (StreamReader reader = new(Global.AlunoDataPath))
+			using (StreamReader reader = new(Global.MateriaDataPath))
 			{
 				string line;
 				while ((line = reader.ReadLine()!) != null)
@@ -290,17 +289,38 @@ public static class Misc
 		int lineNumber = 1;
 		Vetor<Matricula> mat = new Vetor<Matricula>();
 
-		if (File.Exists(Global.AlunoDataPath))
+		if (File.Exists(Global.MatriculaDataPath))
 		{
-			using (StreamReader reader = new(Global.AlunoDataPath))
+			using (StreamReader reader = new(Global.MatriculaDataPath))
 			{
 				string line;
 				while ((line = reader.ReadLine()!) != null)
 				{
 					string[] parts = line.Split(';');
-					if (parts.Length == 2)
+					if (parts.Length == 6)
 					{
-						mat.Add(new Matricula(parts[0], parts[1]));
+						Aluno[] ALN = GetAlunosByMatricula(ref alunos, int.Parse(parts[0]));
+						if (ALN.Length > 1)
+						{
+							Console.WriteLine($"Mais de um aluno encontrado para a matrícula {parts[0]}. Favor corrigir antes de prosseguir (alunos.dat)");
+							throw new Exception("MaisDeUmAlunoParaMatricula");
+						}
+
+						Materia[] MTR = GetMateriasByCodigo(ref materias, int.Parse(parts[1]));
+						if (MTR.Length > 1)
+						{
+							Console.WriteLine($"Mais de uma matéria encontrada para o código {parts[1]}. Favor corrigir antes de prosseguir (materias.dat)");
+							throw new Exception("MaisDeUmaMateriaParaCodigo");
+						}
+
+						Aluno aluno = ALN[0];
+						Materia materia = MTR[0];
+						mat.Add(new Matricula(ref aluno, ref materia, double.Parse(parts[2]), double.Parse(parts[3]), parts[5], double.Parse(parts[4])));
+					}
+					else
+					{
+						Console.WriteLine($"Linha {lineNumber} inválida por conter mais ou menos de 6 campos. Favor corrigir antes de prosseguir (matriculas.dat)");
+						throw new Exception("LinhaInvalida");
 					}
 
 					lineNumber++;

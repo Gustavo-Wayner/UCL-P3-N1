@@ -78,41 +78,42 @@ public static class Program
 							break;
 
 						case 2:
-							bool cod_repetido = false;
 							string nome_materia;
 							double nota_min;
 							int codigo;
 
 							Console.Write("Digite o nome da materia: ");
 							nome_materia = Console.ReadLine()!;
-							nota_min = Parse<double>("Informe a nota minima para a materia: ");
 
-							do
+							nota_min = Parse<double>("Informe a nota minima para a materia: ");
+							while (nota_min < 0 || nota_min >= 10)
+							{
+								Console.WriteLine("Nota minima deve estar entre 0 e 10!!!");
+								nota_min = Parse<double>("Informe a nota minima para a materia: ");
+							}
+
+							while (true)
 							{
 								codigo = Parse<int>("Informe o codigo da materia: ");
 
-								foreach (Materia materia in Materias.GetData())
+								Materia[] matCod = Materias.GetData().Where(m => m.getCodigo() == codigo).ToArray();
+								if (matCod.Length == 0)
 								{
-									if (materia.getCodigo() == codigo)
-									{
-										Console.WriteLine("Codigo repetido!!!");
-										cod_repetido = true;
-										break;
-									}
+									break;
 								}
-							} while (!cod_repetido);
+								Console.WriteLine("Codigo repetido!!!");
+							}
 
 							Materias.Add(new(nome_materia, nota_min, codigo));
 
 							OrderMaterias(ref Materias);
 							break;
 
-						// TODO: Implementando
 						case 3:
 							Materia materia_matricula = SearchMateria(ref Materias);
 							Aluno aluno_matricula = SearchAluno(ref Alunos);
 
-							Matriculas.Add(new Matricula(ref aluno_matricula, ref materia_matricula));
+							Matriculas.Add(new Matricula(ref aluno_matricula, ref materia_matricula, 0, 0));
 							OrderMatriculas(ref Matriculas);
 
 							break;
@@ -139,7 +140,7 @@ public static class Program
 							Aluno aluno_nota = SearchAluno(ref Alunos);
 
 							matricula_selecionada = Matriculas.GetData().Where(x => x.GetAluno().getMatricula() == aluno_nota.getMatricula() && x.GetMateria().getCodigo() == materia_nota.getCodigo()).FirstOrDefault();
-							if (matricula_selecionada != null)
+							if (matricula_selecionada == null)
 							{
 								Console.WriteLine("Não ha uma matrícula para esse aluno nessa materia!");
 								break;
@@ -157,7 +158,7 @@ public static class Program
 							}
 
 							matricula_selecionada!.SetMedia((matricula_selecionada!.GetN1() + matricula_selecionada!.GetN2()) / 2);
-							matricula_selecionada!.SetEstado(matricula_selecionada!.GetMedia() >= materia_nota.getNotaMin() ? Misc.State.Aprovado : Misc.State.Reprovado);
+							matricula_selecionada!.SetEstado(matricula_selecionada!.GetMedia() >= materia_nota.getNotaMin() ? 0 : 1);
 
 							break;
 
@@ -184,7 +185,7 @@ public static class Program
 							sw.WriteLine($"{mat.getNome()};{mat.getNotaMin()};{mat.getCodigo()}");
 					}
 
-					using (StreamWriter sw = new(Global.MateriaDataPath))
+					using (StreamWriter sw = new(Global.MatriculaDataPath))
 					{
 						foreach (Matricula mat in Matriculas.GetData())
 							sw.WriteLine($"{mat.GetAluno().getMatricula()};{mat.GetMateria().getCodigo()};{mat.GetN1()};{mat.GetN2()};{mat.GetMedia()};{mat.GetEstado()}");
