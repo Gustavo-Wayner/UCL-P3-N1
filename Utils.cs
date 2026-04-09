@@ -27,13 +27,21 @@ public static class Misc
 	/// </summary>
 	/// <param name="ALUNOS">O vetor de alunos.</param>
 	/// <returns>O aluno encontrado.</returns>
-	public static Aluno SearchAluno(ref Vetor<Aluno> ALUNOS)
+	public static Aluno? SearchAluno(ref Vetor<Aluno> ALUNOS)
 	{
 		Aluno[] Alunos = ALUNOS.GetData();
 
-		Console.WriteLine("Informe o nome do aluno:");
+		if (Alunos.Length == 0)
+		{
+			Console.WriteLine("Nenhum aluno cadastrado!");
+			return null;
+		}
+
+		Console.WriteLine("Informe o nome do aluno (ou digite '0' para voltar):");
 		string nome_aluno = Console.ReadLine()!;
-		Aluno aluno = new("", 0, 0);
+		if (nome_aluno == "0") return null;
+
+		Aluno aluno = null!;
 
 		bool found_aluno = false;
 		while (!found_aluno)
@@ -42,13 +50,18 @@ public static class Misc
 			if (alunos_achados.Length == 0)
 			{
 				Console.WriteLine($"Aluno com nome {nome_aluno} não encontrado!");
-				Console.WriteLine("Informe o nome do aluno:");
+				Console.WriteLine("Informe o nome do aluno (ou digite '0' para voltar):");
 				nome_aluno = Console.ReadLine()!;
+				if (nome_aluno == "0") return null;
 			}
 			else if (alunos_achados.Length > 1)
 			{
 				Console.WriteLine($"Mais de um aluno encontrado com o nome {nome_aluno}!");
-				int mat_aluno = Parse<int>("Informe a matrícula do aluno: ");
+				Console.WriteLine("Informe a matrícula do aluno (ou digite '0' para voltar):");
+				string mat_input = Console.ReadLine()!;
+				if (mat_input == "0") return null;
+
+				int mat_aluno = int.Parse(mat_input);
 
 				if (alunos_achados.Any(x => x.getMatricula() == mat_aluno))
 				{
@@ -75,15 +88,22 @@ public static class Misc
 	/// </summary>
 	/// <param name="MATERIAS">O vetor de materias.</param>
 	/// <returns>A materia encontrada.</returns>
-	public static Materia SearchMateria(ref Vetor<Materia> MATERIAS)
+	public static Materia? SearchMateria(ref Vetor<Materia> MATERIAS)
 	{
 		Materia[] Materias = MATERIAS.GetData();
-		Materia materia = default!;
 
+		if (Materias.Length == 0)
+		{
+			Console.WriteLine("Nenhuma matéria cadastrada!");
+			return null;
+		}
+
+		Materia materia = null!;
 		bool found_materia = false;
 
-		Console.WriteLine("Informe o nome da materia:");
+		Console.WriteLine("Informe o nome da materia (ou digite '0' para voltar):");
 		string nome_materia = Console.ReadLine()!;
+		if (nome_materia == "0") return null;
 
 		while (!found_materia)
 		{
@@ -91,15 +111,20 @@ public static class Misc
 			if (materias_achadas.Length == 0)
 			{
 				Console.WriteLine("Materia não encontrada!");
-				Console.WriteLine("Informe o nome da materia:");
+				Console.WriteLine("Informe o nome da materia (ou digite '0' para voltar):");
 				nome_materia = Console.ReadLine()!;
+				if (nome_materia == "0") return null;
 			}
 			else if (materias_achadas.Length > 1)
 			{
 				Console.WriteLine($"Mais de uma materia chamada {nome_materia} encontrada!");
 				while (true)
 				{
-					int cod_materia = Parse<int>("Informe o código da materia: ");
+					Console.WriteLine("Informe o código da materia (ou digite '0' para voltar):");
+					string cod_input = Console.ReadLine()!;
+					if (cod_input == "0") return null;
+
+					int cod_materia = int.Parse(cod_input);
 					if (materias_achadas.Any(x => x.getCodigo() == cod_materia))
 					{
 						Materia materia_selecionada = materias_achadas.First(x => x.getCodigo() == cod_materia);

@@ -110,8 +110,10 @@ public static class Program
 							break;
 
 						case 3:
-							Materia materia_matricula = SearchMateria(ref Materias);
-							Aluno aluno_matricula = SearchAluno(ref Alunos);
+							Materia? materia_matricula = SearchMateria(ref Materias);
+							if (materia_matricula == null) break;
+							Aluno? aluno_matricula = SearchAluno(ref Alunos);
+							if (aluno_matricula == null) break;
 
 							Matriculas.Add(new Matricula(ref aluno_matricula, ref materia_matricula, 0, 0));
 							OrderMatriculas(ref Matriculas);
@@ -136,8 +138,10 @@ public static class Program
 							} while (!N1OrN2);
 
 
-							Materia materia_nota = SearchMateria(ref Materias);
-							Aluno aluno_nota = SearchAluno(ref Alunos);
+							Materia? materia_nota = SearchMateria(ref Materias);
+							if (materia_nota == null) break;
+							Aluno? aluno_nota = SearchAluno(ref Alunos);
+							if (aluno_nota == null) break;
 
 							matricula_selecionada = Matriculas.GetData().Where(x => x.GetAluno().getMatricula() == aluno_nota.getMatricula() && x.GetMateria().getCodigo() == materia_nota.getCodigo()).FirstOrDefault();
 							if (matricula_selecionada == null)
