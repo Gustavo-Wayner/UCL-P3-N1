@@ -9,6 +9,12 @@ namespace UCL_P3_N1
 		private int idade;
 		private int matricula;
 
+		/// <summary>
+		/// Construtor da classe Aluno
+		/// </summary>
+		/// <param name="_nome">Nome do aluno</param>
+		/// <param name="_idade">Idade do aluno</param>
+		/// <param name="_matricula">Matrícula do aluno</param>
 		public Aluno(string _nome, int _idade, int _matricula)
 		{
 			if (_idade < 0)
@@ -61,6 +67,12 @@ namespace UCL_P3_N1
 		double nota_min;
 		int codigo;
 
+		/// <summary>
+		/// Construtor da classe Materia
+		/// </summary>
+		/// <param name="_nome">Nome da matéria</param>
+		/// <param name="_nota_min">Nota mínima da matéria</param>
+		/// <param name="_codigo">Código da matéria</param>
 		public Materia(string _nome, double _nota_min, int _codigo)
 		{
 			nome = _nome;
@@ -105,9 +117,9 @@ namespace UCL_P3_N1
 		private Aluno aluno;
 		private Materia materia;
 
-		private double n1;
-		private double n2;
-		private double media;
+		private double? n1;
+		private double? n2;
+		private double? media;
 		private string estado;
 
 		/// <summary>
@@ -119,14 +131,14 @@ namespace UCL_P3_N1
 		/// <param name="_n2">Segunda nota (Opcional); Valor padrão: 0</param>
 		/// <param name="_estado">Estado (Aprovado, Reprovado, A definir)(Opcional); Valor padrão: ADefinir</param>
 		/// <param name="_media">Média (Opcional); Valor padrão: 0</param>
-		public Matricula(ref Aluno _aluno, ref Materia _materia, double _n1, double _n2, string _estado = "A definir", double _media = 0)
+		public Matricula(ref Aluno _aluno, ref Materia _materia, double? _n1 = null, double? _n2 = null, double? _media = null, string _estado = "N/A")
 		{
 			aluno = _aluno;
 			materia = _materia;
 			n1 = _n1;
 			n2 = _n2;
-			estado = _estado;
 			media = _media;
+			estado = _estado;
 		}
 
 		/// <summary>
@@ -145,13 +157,13 @@ namespace UCL_P3_N1
 		/// Obtém a primeira nota
 		/// </summary>
 		/// <returns>Retorna a primeira nota</returns>
-		public double GetN1() => n1;
+		public double? GetN1() => n1;
 
 		/// <summary>
 		/// Obtém a segunda nota
 		/// </summary>
 		/// <returns>Retorna a segunda nota</returns>
-		public double GetN2() => n2;
+		public double? GetN2() => n2;
 
 		/// <summary>
 		/// Obtém o estado
@@ -163,7 +175,7 @@ namespace UCL_P3_N1
 		/// Obtém a média
 		/// </summary>
 		/// <returns>Retorna a média</returns>
-		public double GetMedia() => media;
+		public double? GetMedia() => media;
 
 		/// <summary>
 		/// Define a primeira nota
@@ -196,10 +208,15 @@ namespace UCL_P3_N1
 					estado = "Reprovado";
 					break;
 				default:
-					estado = "A definir";
+					estado = "N/A";
 					break;
 			}
 		}
-		public void SetMedia(double _media) => media = _media;
+
+		/// <summary>
+		/// Define a média
+		/// </summary>
+		/// <param name="_media">A média</param>
+		public void SetMedia(double? _media) => media = _media;
 	}
 }
