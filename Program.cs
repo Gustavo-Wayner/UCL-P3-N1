@@ -139,14 +139,13 @@ public static class Program
 			return;
 		}
 
-		Materia? Mat_pesquisa = SearchMateria(ref Materias);
+		Materia? Mat_pesquisa = SearchMateria();
 		if (Mat_pesquisa == null) return;
 
 		Matricula[] matriculas = Matriculas.GetData().Where(x => x.GetMateria().getCodigo() == Mat_pesquisa.getCodigo()).ToArray();
 		if (matriculas.Length == 0)
 		{
 			Console.WriteLine("Nenhum aluno matriculado na materia.");
-			Console.ReadLine();
 			return;
 		}
 
@@ -183,7 +182,7 @@ public static class Program
 			return;
 		}
 
-		Aluno? aluno_pesquisa = SearchAluno(ref Alunos);
+		Aluno? aluno_pesquisa = SearchAluno();
 		if (aluno_pesquisa == null) return;
 
 		Matricula[] matriculas_aluno = Matriculas.GetData().Where(x => x.GetAluno().getMatricula() == aluno_pesquisa!.getMatricula()).ToArray();
@@ -243,15 +242,30 @@ public static class Program
 	/// </summary>
 	private static void CadastrarAluno()
 	{
-		string nome_aluno;
-		Console.Write("Informe o nome do(a) aluno(a) (Ou digite 0 para voltar): ");
-		while (string.IsNullOrWhiteSpace(nome_aluno = Console.ReadLine()!))
-			Console.WriteLine("Nome deve ser preenchido!!!");
+		string? nome_aluno;
+		while (true)
+		{
+			Console.Write("Informe o nome do(a) aluno(a) (0 para voltar): ");
+			nome_aluno = ToTitleCase(Console.ReadLine());
+
+			if(string.IsNullOrWhiteSpace(nome_aluno))
+			{
+				Console.WriteLine("Nome deve ser preenchido!!!");
+				continue;
+			}
+
+			else if(int.TryParse(nome_aluno, out int n) && nome_aluno != "0")
+			{
+				Console.WriteLine("O nome não deve ser um numero!");
+				continue;
+			}
+			break;
+		}
 
 		if (nome_aluno == "0")
 			return;
 
-		int idade = (int)Parse<uint>("Informe a idade do(a) aluno(a) (ou digite 0 para voltar): ", "Idade deve ser um numero natural!!!");
+		int idade = (int)Parse<uint>("Informe a idade do(a) aluno(a) (0 para voltar): ", "Idade deve ser um numero natural!!!");
 
 		if (idade == 0)
 			return;
@@ -261,14 +275,7 @@ public static class Program
 		do
 		{
 			clone = false;
-			matricula = Parse<int>($"Informe um codigo de matricula para {nome_aluno}: ", "Matricula deve ser um numero!!!");
-
-			if (matricula == 0)
-			{
-				Console.WriteLine("A matrícula deve ser um numero maior que zero!!!");
-				clone = true;
-				continue;
-			}
+			matricula = (int)Parse<uint>($"Informe um codigo de matricula para {nome_aluno} (0 para voltar): ", "Matricula deve ser um numero natural!!!");
 
 			foreach (Aluno aluno in Alunos.GetData())
 			{
@@ -281,6 +288,9 @@ public static class Program
 			}
 		} while (clone);
 
+		if (matricula == 0)
+			return;
+
 		Alunos.Add(new(nome_aluno, idade, matricula));
 		OrderAlunos(ref Alunos);
 	}
@@ -291,32 +301,44 @@ public static class Program
 	/// </summary>
 	private static void CadastrarMateria()
 	{
-		string nome_materia;
+		string? nome_materia;
 		double nota_min;
 		int codigo;
 
-		Console.Write("Digite o nome da materia (ou digite 0 para voltar): ");
-		nome_materia = Console.ReadLine()!;
+		while (true)
+		{
+			Console.Write("Informe o nome da matéria (0 para voltar): ");
+			nome_materia = ToTitleCase(Console.ReadLine());
+
+			if(string.IsNullOrWhiteSpace(nome_materia))
+			{
+				Console.WriteLine("Nome deve ser preenchido!!!");
+				continue;
+			}
+
+			else if(int.TryParse(nome_materia, out int n) && nome_materia != "0")
+			{
+				Console.WriteLine("O nome não deve ser um numero!");
+				continue;
+			}
+			break;
+		}
 
 		if (nome_materia == "0")
 			return;
 
-		nota_min = Parse<double>("Informe a nota minima para a materia: ");
+		nota_min = Parse<double>("Informe a nota minima para a materia (0 para voltar): ");
 		while (nota_min < 0 || nota_min >= 10)
 		{
 			Console.WriteLine("Nota minima deve estar entre 0 e 10!!!");
 			nota_min = Parse<double>("Informe a nota minima para a materia: ");
 		}
+		if (nota_min == 0)
+			return;
 
 		while (true)
 		{
-			codigo = Parse<int>("Informe o codigo da materia: ");
-
-			if (codigo == 0)
-			{
-				Console.WriteLine("O código deve ser um numero maior que zero!!!");
-				continue;
-			}
+			codigo = (int)Parse<uint>("Informe o codigo da materia (0 para voltar): ");
 
 			Materia[] matCod = Materias.GetData().Where(m => m.getCodigo() == codigo).ToArray();
 			if (matCod.Length == 0)
@@ -325,6 +347,8 @@ public static class Program
 			}
 			Console.WriteLine("Codigo repetido!!!");
 		}
+		if (codigo == 0)
+			return;
 
 		Materias.Add(new(nome_materia, nota_min, codigo));
 		OrderMaterias(ref Materias);
@@ -347,10 +371,10 @@ public static class Program
 			return;
 		}
 
-		Materia? materia_matricula = SearchMateria(ref Materias);
+		Materia? materia_matricula = SearchMateria();
 		if (materia_matricula == null) return;
 
-		Aluno? aluno_matricula = SearchAluno(ref Alunos);
+		Aluno? aluno_matricula = SearchAluno();
 		if (aluno_matricula == null) return;
 
 		Matriculas.Add(new Matricula(ref aluno_matricula, ref materia_matricula));
@@ -389,10 +413,10 @@ public static class Program
 
 		if (back) return;
 
-		Materia? materia_nota = SearchMateria(ref Materias);
+		Materia? materia_nota = SearchMateria();
 		if (materia_nota == null) return;
 
-		Aluno? aluno_nota = SearchAluno(ref Alunos);
+		Aluno? aluno_nota = SearchAluno();
 		if (aluno_nota == null) return;
 
 		matricula_selecionada = Matriculas.GetData().Where(x => x.GetAluno().getMatricula() == aluno_nota.getMatricula() && x.GetMateria().getCodigo() == materia_nota.getCodigo()).FirstOrDefault();

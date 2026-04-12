@@ -15,9 +15,28 @@ public static class Misc
 		while (true)
 		{
 			Console.Write(prompt);
-			if (T.TryParse(Console.ReadLine(), null, out T? output)) return output;
+			if (T.TryParse(Console.ReadLine()!.Trim(), null, out T? output)) return output;
 			Console.WriteLine(error);
 		}
+	}
+
+	/// <summary>
+	/// Converte uma string para title case (Primeira letra de cada palavra maiúscula)
+	/// </summary>
+	/// <param name="input">string de entrada</param>
+	/// <returns>string de entrada em title case</returns>
+	public static string? ToTitleCase(string? input)
+	{
+		if (string.IsNullOrWhiteSpace(input))
+			return null;
+		string output = string.Empty;
+		input = input.Trim();
+
+		output += char.ToUpper(input[0]);
+		for(int i = 1; i < input.Length; i++)
+			output += input[i-1] == ' ' ? char.ToUpper(input[i]) : char.ToLower(input[i]);
+
+		return output;
 	}
 
 	/// <summary>
