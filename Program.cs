@@ -39,7 +39,7 @@ public static class Program
 
 		while (!over)
 		{
-			input = Parse<int>("Digite o numero correspondente para selecionar uma opção\n" +
+			input = Parse<int>($"{new string('=', 16)}HOME{new string('=', 16)}\n" +
 				"1 - Listar;\n" +
 				"2 - Cadastrar;\n" +
 				"3 - Salvar;\n" +
@@ -66,6 +66,8 @@ public static class Program
 					break;
 			}
 		}
+
+		Console.Clear();
 	}
 
 	/// <summary>
@@ -73,11 +75,13 @@ public static class Program
 	/// </summary>
 	private static void ListarMenu()
 	{
-		int input = Parse<int>("Digite o numero correspondente para selecionar uma opção\n" +
+		Console.Clear();
+		int input = Parse<int>($"{new string('=', 16)}LISTAGEM{new string('=', 16)}\n" +
 			"1 - Listar alunos;\n" +
 			"2 - Listar materias;\n" +
 			"3 - Listar alunos de uma materia;\n" +
 			"4 - Listar boletim de um aluno;\n" +
+			"5 - Voltar;\n" +
 			"->"
 		);
 
@@ -95,6 +99,9 @@ public static class Program
 			case 4:
 				ListarBoletimDeAluno();
 				break;
+			case 5:
+				Console.Clear();
+				break;
 			default:
 				Console.WriteLine("Entrada inválida!");
 				break;
@@ -109,6 +116,7 @@ public static class Program
 	{
 		if (Alunos.Len == 0)
 		{
+			Console.Clear();
 			Console.WriteLine("Nenhum aluno para listar!!!");
 			return;
 		}
@@ -122,6 +130,7 @@ public static class Program
 	{
 		if (Materias.Len == 0)
 		{
+			Console.Clear();
 			Console.WriteLine("Nenhuma materia para listar!!!");
 			return;
 		}
@@ -135,7 +144,8 @@ public static class Program
 	{
 		if (Materias.Len == 0)
 		{
-			Console.WriteLine("Nenhuma materia para pesquisar!!!");
+			Console.Clear();
+			Console.WriteLine("Nenhuma materia para listar alunos!!!");
 			return;
 		}
 
@@ -145,6 +155,7 @@ public static class Program
 		Matricula[] matriculas = Matriculas.GetData().Where(x => x.GetMateria().getCodigo() == Mat_pesquisa.getCodigo()).ToArray();
 		if (matriculas.Length == 0)
 		{
+			Console.Clear();
 			Console.WriteLine("Nenhum aluno matriculado na materia.");
 			return;
 		}
@@ -168,6 +179,7 @@ public static class Program
 		Console.WriteLine("-------------------------------------------------------------------------------------------------------------------");
 		Console.WriteLine("Digite qualquer coisa para voltar");
 		Console.ReadLine();
+		Console.Clear();
 	}
 
 	/// <summary>
@@ -178,6 +190,7 @@ public static class Program
 	{
 		if (Alunos.Len == 0)
 		{
+			Console.Clear();
 			Console.WriteLine("Nenhum aluno para listar o boletim!!!");
 			return;
 		}
@@ -198,6 +211,7 @@ public static class Program
 		Console.WriteLine("-------------------------------------------------------------------------------------------------------------------");
 		Console.WriteLine("Digite qualquer coisa para voltar");
 		Console.ReadLine();
+		Console.Clear();
 	}
 
 	/// <summary>
@@ -205,7 +219,8 @@ public static class Program
 	/// </summary>
 	private static void CadastrarMenu()
 	{
-		int input = Parse<int>("Digite o numero correspondente para selecionar uma opção\n" +
+		Console.Clear();
+		int input = Parse<int>($"{new string('=', 16)}CADASTROS{new string('=', 16)}\n" +
 			"1 - Cadastrar aluno;\n" +
 			"2 - Cadastrar materia;\n" +
 			"3 - Matricular aluno em materia;\n" +
@@ -229,6 +244,7 @@ public static class Program
 				AtribuirNota();
 				break;
 			case 5:
+				Console.Clear();
 				break;
 			default:
 				Console.WriteLine("Entrada inválida!");
@@ -254,21 +270,33 @@ public static class Program
 				continue;
 			}
 
-			else if(int.TryParse(nome_aluno, out int n) && nome_aluno != "0")
+			if(int.TryParse(nome_aluno, out int n) && nome_aluno != "0")
 			{
 				Console.WriteLine("O nome não deve ser um numero!");
+				continue;
+			}
+
+			if(nome_aluno.ContainsAny("#;:{}[]/?°\\|!@$%¨&*()_+=-¹²³£¢¬§´`~^ªº\'\".,<>".ToArray()))
+			{
+				Console.WriteLine("Entrada inválida");
 				continue;
 			}
 			break;
 		}
 
 		if (nome_aluno == "0")
+		{
+			Console.Clear();
 			return;
+		}
 
 		int idade = (int)Parse<uint>("Informe a idade do(a) aluno(a) (0 para voltar): ", "Idade deve ser um numero natural!!!");
 
 		if (idade == 0)
+		{
+			Console.Clear();
 			return;
+		}
 
 		int matricula;
 		bool clone;
@@ -289,7 +317,10 @@ public static class Program
 		} while (clone);
 
 		if (matricula == 0)
+		{
+			Console.Clear();
 			return;
+		}
 
 		Alunos.Add(new(nome_aluno, idade, matricula));
 		OrderAlunos(ref Alunos);
@@ -316,16 +347,25 @@ public static class Program
 				continue;
 			}
 
-			else if(int.TryParse(nome_materia, out int n) && nome_materia != "0")
+			if(int.TryParse(nome_materia, out int n) && nome_materia != "0")
 			{
 				Console.WriteLine("O nome não deve ser um numero!");
+				continue;
+			}
+
+			if(nome_materia.ContainsAny("#;:{}[]/?°\\|!@$%¨&*()_+=-¹²³£¢¬§´`~^ªº\'\".,><".ToArray()))
+			{
+				Console.WriteLine("Entrada inválida");
 				continue;
 			}
 			break;
 		}
 
 		if (nome_materia == "0")
+		{
+			Console.Clear();
 			return;
+		}
 
 		nota_min = Parse<double>("Informe a nota minima para a materia (0 para voltar): ");
 		while (nota_min < 0 || nota_min >= 10)
@@ -334,7 +374,10 @@ public static class Program
 			nota_min = Parse<double>("Informe a nota minima para a materia: ");
 		}
 		if (nota_min == 0)
+		{
+			Console.Clear();
 			return;
+		}
 
 		while (true)
 		{
@@ -348,7 +391,10 @@ public static class Program
 			Console.WriteLine("Codigo repetido!!!");
 		}
 		if (codigo == 0)
+		{
+			Console.Clear();
 			return;
+		}
 
 		Materias.Add(new(nome_materia, nota_min, codigo));
 		OrderMaterias(ref Materias);
@@ -362,20 +408,37 @@ public static class Program
 	{
 		if (Alunos.Len == 0)
 		{
+			Console.Clear();
 			Console.WriteLine("Nenhum aluno para matricular!!!");
 			return;
 		}
 		if (Materias.Len == 0)
 		{
+			Console.Clear();
 			Console.WriteLine("Nenhuma materia em que matricular!!!");
 			return;
 		}
 
 		Materia? materia_matricula = SearchMateria();
-		if (materia_matricula == null) return;
+		if (materia_matricula == null)
+		{
+			Console.Clear();
+			return;
+		}
 
 		Aluno? aluno_matricula = SearchAluno();
-		if (aluno_matricula == null) return;
+		if (aluno_matricula == null)
+		{
+			Console.Clear();
+			return;
+		}
+
+		if(Matriculas.GetData().Any(x => x.GetAluno().getMatricula() == aluno_matricula.getMatricula() && x.GetMateria().getCodigo() == materia_matricula.getCodigo()))
+		{
+			Console.Clear();
+			Console.WriteLine($"{aluno_matricula.getNome()} ja possúi matrícula em {materia_matricula.getNome()}");
+			return;
+		}
 
 		Matriculas.Add(new Matricula(ref aluno_matricula, ref materia_matricula));
 		OrderMatriculas(ref Matriculas);
@@ -389,6 +452,7 @@ public static class Program
 	{
 		if (Matriculas.Len == 0)
 		{
+			Console.Clear();
 			Console.WriteLine("Nenhuma matrícula para atribuir nota!!!");
 			return;
 		}
@@ -411,22 +475,44 @@ public static class Program
 			else Console.WriteLine("Entrada inválida!");
 		} while (!N1OrN2);
 
-		if (back) return;
-
-		Materia? materia_nota = SearchMateria();
-		if (materia_nota == null) return;
-
-		Aluno? aluno_nota = SearchAluno();
-		if (aluno_nota == null) return;
-
-		matricula_selecionada = Matriculas.GetData().Where(x => x.GetAluno().getMatricula() == aluno_nota.getMatricula() && x.GetMateria().getCodigo() == materia_nota.getCodigo()).FirstOrDefault();
-		if (matricula_selecionada == null)
+		if (back)
 		{
-			Console.WriteLine("Não ha uma matrícula para esse aluno nessa materia!");
+			Console.Clear();
 			return;
 		}
 
-		double nota = Parse<double>("Informe a nota: ");
+		Materia? materia_nota = SearchMateria();
+		if (materia_nota == null)
+		{
+			Console.Clear();
+			return;
+		}
+
+		Aluno? aluno_nota = SearchAluno();
+		if (aluno_nota == null)
+		{
+			Console.Clear();
+			return;
+		}
+
+		if (!Matriculas.GetData().Any(x => x.GetAluno().getMatricula() == aluno_nota.getMatricula() && x.GetMateria().getCodigo() == materia_nota.getCodigo()))
+		{
+			Console.Clear();
+			Console.WriteLine("Não ha uma matrícula para esse aluno nessa materia!");
+			return;
+		}
+		matricula_selecionada = Matriculas.GetData().First(x => x.GetAluno().getMatricula() == aluno_nota.getMatricula() && x.GetMateria().getCodigo() == materia_nota.getCodigo());
+
+		double nota;
+
+		while(true)
+		{
+			nota = Parse<double>("Informe a nota: ");
+
+			if (nota >= 0 && nota <= 10)
+				break;
+			Console.WriteLine("A nota deve estar entre 0 e 10!");
+		}
 
 		if (N == 1)
 		{
