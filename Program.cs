@@ -120,6 +120,21 @@ public static class Program
 			Console.WriteLine("Nenhum aluno para listar!!!");
 			return;
 		}
+
+        Console.WriteLine("------------------------------------------");
+        Console.WriteLine($"{"Matrícula",-13}|{"Nome",-38} |{"Idade"}");
+        Console.WriteLine("------------------------------------------");
+
+
+        foreach (var aluno in Alunos.GetData())
+        {
+            Console.WriteLine($"{aluno.GetMatricula(),-13}|{aluno.GetNome(),-38}|{aluno.GetIdade()}");
+        }
+
+        Console.WriteLine("------------------------------------------");
+        Console.WriteLine("Digite qualquer coisa para voltar");
+        Console.ReadLine();
+        Console.Clear();
 	}
 
 	/// <summary>
@@ -134,6 +149,20 @@ public static class Program
 			Console.WriteLine("Nenhuma materia para listar!!!");
 			return;
 		}
+
+		Console.WriteLine("---------------------------------------------");
+         Console.WriteLine($"{"Codigo",-13}|{"Nome",-38} |{"Nota Minima"}");
+         Console.WriteLine("---------------------------------------------");
+
+         foreach (var materia in Materias.GetData())
+         {
+             Console.WriteLine($"{materia.GetCodigo(),-13}|{materia.GetNome(),-38}|{materia.GetNotaMin().ToString("F2")}");
+         }
+
+         Console.WriteLine("------------------------------------------");
+         Console.WriteLine("Digite qualquer coisa para voltar");
+         Console.ReadLine();
+         Console.Clear();
 	}
 
 	/// <summary>
