@@ -20,6 +20,40 @@ public static class Misc
 		}
 	}
 
+	public static T FilterFirst<T>(Vetor<T> original, Func<T, bool> filter)
+	{
+		foreach(T item in original.GetData())
+		{
+			if(filter(item))
+				return item;
+		}
+
+		throw new Exception("NenhumItemPresenteQueCumpraOsRequisitos");
+	}
+
+	public static bool Any<T>(Vetor<T> original, Func<T, bool> filter)
+	{
+		foreach(T item in original.GetData())
+		{
+			if(filter(item))
+				return true;
+		}
+
+		return false;
+	}
+
+	public static T[] FilterAll<T>(Vetor<T> original, Func<T, bool> filter)
+	{
+		Vetor<T> ret = new();
+		foreach(T item in original.GetData())
+		{
+			if(filter(item))
+				ret.Add(item);
+		}
+
+		return ret.GetData();
+	}
+
 	/// <summary>
 	/// Converte uma string para title case (Primeira letra de cada palavra maiúscula)
 	/// </summary>
