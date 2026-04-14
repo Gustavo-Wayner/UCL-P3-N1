@@ -181,7 +181,7 @@ public static class Program
 		Materia? Mat_pesquisa = SearchMateria();
 		if (Mat_pesquisa == null) return;
 
-		Matricula[] matriculas = Matriculas.Data!.Where(x => x._Materia.Codigo == Mat_pesquisa.Codigo).ToArray();
+		Matricula[] matriculas = FilterAll(Matriculas.Data!, x => x._Materia.Codigo == Mat_pesquisa.Codigo).ToArray();
 		if (matriculas.Length == 0)
 		{
 			Console.Clear();
@@ -197,8 +197,8 @@ public static class Program
 		Console.WriteLine("-------------------------------------------------------------------------------------------------------------------");
 		foreach (var aluno in alunos_em_mat)
 		{
-			double? N1 = matriculas.First(x => x._Aluno.Matricula == aluno.Matricula).N1;
-			double? N2 = matriculas.First(x => x._Aluno.Matricula == aluno.Matricula).N2;
+			double? N1 = FilterFirst(matriculas, x => x._Aluno.Matricula == aluno.Matricula).N1;
+			double? N2 = FilterFirst(matriculas, x => x._Aluno.Matricula == aluno.Matricula).N2;
 			double? media = (N1 == null || N2 == null) ? null : (N1 + N2) / 2;
 
 			string estado = "N/A";
@@ -227,7 +227,7 @@ public static class Program
 		Aluno? aluno_pesquisa = SearchAluno();
 		if (aluno_pesquisa == null) return;
 
-		Matricula[] matriculas_aluno = Matriculas.Data!.Where(x => x._Aluno.Matricula == aluno_pesquisa!.Matricula).ToArray();
+		Matricula[] matriculas_aluno = FilterAll(Matriculas.Data!, x => x._Aluno.Matricula == aluno_pesquisa!.Matricula).ToArray();
 
 		Console.WriteLine($"Boletim de {aluno_pesquisa!.Nome}");
 		Console.WriteLine("-------------------------------------------------------------------------------------------------------------------");
@@ -412,7 +412,7 @@ public static class Program
 		{
 			codigo = (int)Parse<uint>("Informe o codigo da materia (0 para voltar): ");
 
-			Materia[] matCod = Materias.Data!.Where(m => m.Codigo == codigo).ToArray();
+			Materia[] matCod = FilterAll(Materias.Data!, m => m.Codigo == codigo).ToArray();
 			if (matCod.Length == 0)
 			{
 				break;
@@ -462,7 +462,7 @@ public static class Program
 			return;
 		}
 
-		if (Matriculas.Data!.Any(x => x._Aluno.Matricula == aluno_matricula.Matricula && x._Materia.Codigo == materia_matricula.Codigo))
+		if (Any(Matriculas.Data!, x => x._Aluno.Matricula == aluno_matricula.Matricula && x._Materia.Codigo == materia_matricula.Codigo))
 		{
 			Console.Clear();
 			Console.WriteLine($"{aluno_matricula.Nome} ja possúi matrícula em {materia_matricula.Nome}");
@@ -524,13 +524,13 @@ public static class Program
 			return;
 		}
 
-		if (!Matriculas.Data!.Any(x => x._Aluno.Matricula == aluno_nota.Matricula && x._Materia.Codigo == materia_nota.Codigo))
+		if (Any(Matriculas.Data!, x => x._Aluno.Matricula == aluno_nota.Matricula && x._Materia.Codigo == materia_nota.Codigo))
 		{
 			Console.Clear();
 			Console.WriteLine("Não ha uma matrícula para esse aluno nessa materia!");
 			return;
 		}
-		matricula_selecionada = Matriculas.Data!.First(x => x._Aluno.Matricula == aluno_nota.Matricula && x._Materia.Codigo == materia_nota.Codigo);
+		matricula_selecionada = FilterFirst(Matriculas.Data!, x => x._Aluno.Matricula == aluno_nota.Matricula && x._Materia.Codigo == materia_nota.Codigo);
 
 		double nota;
 
