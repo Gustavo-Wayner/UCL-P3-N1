@@ -20,6 +20,17 @@ public static class Misc
 		}
 	}
 
+	public static T FilterFirst<T>(T[] original, Func<T, bool> filter)
+	{
+		foreach (T item in original)
+		{
+			if (filter(item))
+				return item;
+		}
+
+		throw new Exception("NenhumItemPresenteQueCumpraOsRequisitos");
+	}
+
 	public static T FilterFirst<T>(Vetor<T> original, Func<T, bool> filter)
 	{
 		foreach (T item in original.Data!)
@@ -29,6 +40,17 @@ public static class Misc
 		}
 
 		throw new Exception("NenhumItemPresenteQueCumpraOsRequisitos");
+	}
+
+	public static bool Any<T>(T[] original, Func<T, bool> filter)
+	{
+		foreach (T item in original)
+		{
+			if (filter(item))
+				return true;
+		}
+
+		return false;
 	}
 
 	public static bool Any<T>(Vetor<T> original, Func<T, bool> filter)
@@ -42,9 +64,22 @@ public static class Misc
 		return false;
 	}
 
+	public static T[] FilterAll<T>(T[] original, Func<T, bool> filter)
+	{
+		if (original == null) return [];
+		Vetor<T> ret = new();
+		foreach (T item in original)
+		{
+			if (filter(item))
+				ret.Add(item);
+		}
+
+		return ret.Data!;
+	}
+
 	public static T[] FilterAll<T>(Vetor<T> original, Func<T, bool> filter)
 	{
-		if (original.Data == null) return [];
+		if (original == null) return [];
 		Vetor<T> ret = new();
 		foreach (T item in original.Data!)
 		{

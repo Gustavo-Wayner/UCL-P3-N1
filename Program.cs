@@ -121,9 +121,9 @@ public static class Program
 			return;
 		}
 
-		Console.WriteLine("------------------------------------------");
-		Console.WriteLine($"{"Matrícula",-13}|{"Nome",-38} |{"Idade"}");
-		Console.WriteLine("------------------------------------------");
+		Console.WriteLine("-----------------------------------------------------------");
+		Console.WriteLine($"{"Matrícula",-13}|{"Nome",-38}|{"Idade"}");
+		Console.WriteLine("-----------------------------------------------------------");
 
 
 		foreach (var aluno in Alunos.Data!)
@@ -131,7 +131,7 @@ public static class Program
 			Console.WriteLine($"{aluno.Matricula,-13}|{aluno.Nome,-38}|{aluno.Idade}");
 		}
 
-		Console.WriteLine("------------------------------------------");
+		Console.WriteLine("-----------------------------------------------------------");
 		Console.WriteLine("Digite qualquer coisa para voltar");
 		Console.ReadLine();
 		Console.Clear();
@@ -150,16 +150,16 @@ public static class Program
 			return;
 		}
 
-		Console.WriteLine("---------------------------------------------");
-		Console.WriteLine($"{"Codigo",-13}|{"Nome",-38} |{"Nota Minima"}");
-		Console.WriteLine("---------------------------------------------");
+		Console.WriteLine("-----------------------------------------------------------------");
+		Console.WriteLine($"{"Codigo",-13}|{"Nome",-38}|{"Nota Minima"}");
+		Console.WriteLine("-----------------------------------------------------------------");
 
 		foreach (var materia in Materias.Data!)
 		{
 			Console.WriteLine($"{materia.Codigo,-13}|{materia.Nome,-38}|{materia.NotaMin.ToString("F2")}");
 		}
 
-		Console.WriteLine("------------------------------------------");
+		Console.WriteLine("-----------------------------------------------------------------");
 		Console.WriteLine("Digite qualquer coisa para voltar");
 		Console.ReadLine();
 		Console.Clear();
@@ -192,9 +192,9 @@ public static class Program
 		Aluno[] alunos_em_mat = matriculas.Select(x => x._Aluno).ToArray();
 		Console.WriteLine($"Alunos matriculados na materia {Mat_pesquisa.Nome}:");
 
-		Console.WriteLine("-------------------------------------------------------------------------------------------------------------------");
+		Console.WriteLine("--------------------------------------------------------------------------------------------------");
 		Console.WriteLine($"{"Matrícula",-13}|{"Nome",-38} |{"Idade",-8} |{"N1",-6} |{"N2",-6} |{"Média",-6} |{"Estado"}");
-		Console.WriteLine("-------------------------------------------------------------------------------------------------------------------");
+		Console.WriteLine("--------------------------------------------------------------------------------------------------");
 		foreach (var aluno in alunos_em_mat)
 		{
 			double? N1 = FilterFirst(matriculas, x => x._Aluno.Matricula == aluno.Matricula).N1;
@@ -205,7 +205,7 @@ public static class Program
 			if (media != null) estado = media >= Mat_pesquisa.NotaMin ? "Aprovado" : "Reprovado";
 			Console.WriteLine($"{aluno.Matricula,-13}|{aluno.Nome,-38} |{aluno.Idade,-8} |{(N1 == null ? "N/A" : N1.Value.ToString("F2")),-6} |{(N2 == null ? "N/A" : N2.Value.ToString("F2")),-6} |{(media == null ? "N/A" : media.Value.ToString("F2")),-6} |{estado}");
 		}
-		Console.WriteLine("-------------------------------------------------------------------------------------------------------------------");
+		Console.WriteLine("--------------------------------------------------------------------------------------------------");
 		Console.WriteLine("Digite qualquer coisa para voltar");
 		Console.ReadLine();
 		Console.Clear();
@@ -230,14 +230,14 @@ public static class Program
 		Matricula[] matriculas_aluno = FilterAll(Matriculas.Data!, x => x._Aluno.Matricula == aluno_pesquisa!.Matricula).ToArray();
 
 		Console.WriteLine($"Boletim de {aluno_pesquisa!.Nome}");
-		Console.WriteLine("-------------------------------------------------------------------------------------------------------------------");
+		Console.WriteLine("-------------------------------------------------------------------------");
 		Console.WriteLine($"{"Materia",-38} |{"Nota 1",-6} |{"Nota 2",-6} |{"Media",-6} |{"Estado"}");
-		Console.WriteLine("-------------------------------------------------------------------------------------------------------------------");
+		Console.WriteLine("-------------------------------------------------------------------------");
 		foreach (var matricula in matriculas_aluno)
 		{
 			Console.WriteLine($"{matricula._Materia.Nome,-38} |{(matricula.N1 == null ? "N/A" : matricula.N1!.Value.ToString("F2")),-6} |{(matricula.N2 == null ? "N/A" : matricula.N2!.Value.ToString("F2")),-6} |{(matricula.Media == null ? "N/A" : matricula.Media!.Value.ToString("F2")),-6} |{matricula.Estado}");
 		}
-		Console.WriteLine("-------------------------------------------------------------------------------------------------------------------");
+		Console.WriteLine("-------------------------------------------------------------------------");
 		Console.WriteLine("Digite qualquer coisa para voltar");
 		Console.ReadLine();
 		Console.Clear();
@@ -471,6 +471,8 @@ public static class Program
 
 		Matriculas.Add(new Matricula(ref aluno_matricula, ref materia_matricula));
 		OrderMatriculas(ref Matriculas);
+		Console.Clear();
+		Console.WriteLine($"{aluno_matricula.Nome} foi matriculado(a) em {materia_matricula.Nome}");
 	}
 
 	/// <summary>
@@ -524,7 +526,7 @@ public static class Program
 			return;
 		}
 
-		if (Any(Matriculas.Data!, x => x._Aluno.Matricula == aluno_nota.Matricula && x._Materia.Codigo == materia_nota.Codigo))
+		if (!Any(Matriculas.Data!, x => x._Aluno.Matricula == aluno_nota.Matricula && x._Materia.Codigo == materia_nota.Codigo))
 		{
 			Console.Clear();
 			Console.WriteLine("Não ha uma matrícula para esse aluno nessa materia!");
@@ -554,6 +556,9 @@ public static class Program
 
 		matricula_selecionada!.Media = (matricula_selecionada!.N1 + matricula_selecionada!.N2) / 2;
 
+		Console.Clear();
+		Console.WriteLine($"Nota N{N} de {matricula_selecionada._Aluno.Nome} em {matricula_selecionada._Materia.Nome} atribuída com sucesso!");
+
 		if (matricula_selecionada.N1 != null && matricula_selecionada.N2 != null)
 			matricula_selecionada.SetEstado(matricula_selecionada.Media >= materia_nota.NotaMin ? 0 : 1);
 	}
@@ -580,5 +585,8 @@ public static class Program
 			foreach (Matricula mat in Matriculas.Data!)
 				sw.WriteLine($"{mat._Aluno.Matricula};{mat._Materia.Codigo};{mat.N1};{mat.N2};{mat.Media};{mat.Estado}");
 		}
+
+		Console.Clear();
+		Console.WriteLine("Dados salvos com sucesso!");
 	}
 }
