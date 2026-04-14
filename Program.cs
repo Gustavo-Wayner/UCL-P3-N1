@@ -121,20 +121,20 @@ public static class Program
 			return;
 		}
 
-        Console.WriteLine("------------------------------------------");
-        Console.WriteLine($"{"Matrícula",-13}|{"Nome",-38} |{"Idade"}");
-        Console.WriteLine("------------------------------------------");
+		Console.WriteLine("------------------------------------------");
+		Console.WriteLine($"{"Matrícula",-13}|{"Nome",-38} |{"Idade"}");
+		Console.WriteLine("------------------------------------------");
 
 
-        foreach (var aluno in Alunos.GetData())
-        {
-            Console.WriteLine($"{aluno.GetMatricula(),-13}|{aluno.GetNome(),-38}|{aluno.GetIdade()}");
-        }
+		foreach (var aluno in Alunos.GetData())
+		{
+			Console.WriteLine($"{aluno.Matricula,-13}|{aluno.Nome,-38}|{aluno.Idade}");
+		}
 
-        Console.WriteLine("------------------------------------------");
-        Console.WriteLine("Digite qualquer coisa para voltar");
-        Console.ReadLine();
-        Console.Clear();
+		Console.WriteLine("------------------------------------------");
+		Console.WriteLine("Digite qualquer coisa para voltar");
+		Console.ReadLine();
+		Console.Clear();
 	}
 
 	/// <summary>
@@ -151,18 +151,18 @@ public static class Program
 		}
 
 		Console.WriteLine("---------------------------------------------");
-         Console.WriteLine($"{"Codigo",-13}|{"Nome",-38} |{"Nota Minima"}");
-         Console.WriteLine("---------------------------------------------");
+		Console.WriteLine($"{"Codigo",-13}|{"Nome",-38} |{"Nota Minima"}");
+		Console.WriteLine("---------------------------------------------");
 
-         foreach (var materia in Materias.GetData())
-         {
-             Console.WriteLine($"{materia.GetCodigo(),-13}|{materia.GetNome(),-38}|{materia.GetNotaMin().ToString("F2")}");
-         }
+		foreach (var materia in Materias.GetData())
+		{
+			Console.WriteLine($"{materia.Codigo,-13}|{materia.Nome,-38}|{materia.NotaMin.ToString("F2")}");
+		}
 
-         Console.WriteLine("------------------------------------------");
-         Console.WriteLine("Digite qualquer coisa para voltar");
-         Console.ReadLine();
-         Console.Clear();
+		Console.WriteLine("------------------------------------------");
+		Console.WriteLine("Digite qualquer coisa para voltar");
+		Console.ReadLine();
+		Console.Clear();
 	}
 
 	/// <summary>
@@ -181,7 +181,7 @@ public static class Program
 		Materia? Mat_pesquisa = SearchMateria();
 		if (Mat_pesquisa == null) return;
 
-		Matricula[] matriculas = Matriculas.GetData().Where(x => x.GetMateria().getCodigo() == Mat_pesquisa.getCodigo()).ToArray();
+		Matricula[] matriculas = Matriculas.GetData().Where(x => x._Materia.Codigo == Mat_pesquisa.Codigo).ToArray();
 		if (matriculas.Length == 0)
 		{
 			Console.Clear();
@@ -189,21 +189,21 @@ public static class Program
 			return;
 		}
 
-		Aluno[] alunos_em_mat = matriculas.Select(x => x.GetAluno()).ToArray();
-		Console.WriteLine($"Alunos matriculados na materia {Mat_pesquisa.getNome()}:");
+		Aluno[] alunos_em_mat = matriculas.Select(x => x._Aluno).ToArray();
+		Console.WriteLine($"Alunos matriculados na materia {Mat_pesquisa.Nome}:");
 
 		Console.WriteLine("-------------------------------------------------------------------------------------------------------------------");
 		Console.WriteLine($"{"Matrícula",-13}|{"Nome",-38} |{"Idade",-8} |{"N1",-6} |{"N2",-6} |{"Média",-6} |{"Estado"}");
 		Console.WriteLine("-------------------------------------------------------------------------------------------------------------------");
 		foreach (var aluno in alunos_em_mat)
 		{
-			double? N1 = matriculas.First(x => x.GetAluno().getMatricula() == aluno.getMatricula()).GetN1();
-			double? N2 = matriculas.First(x => x.GetAluno().getMatricula() == aluno.getMatricula()).GetN2();
+			double? N1 = matriculas.First(x => x._Aluno.Matricula == aluno.Matricula).N1;
+			double? N2 = matriculas.First(x => x._Aluno.Matricula == aluno.Matricula).N2;
 			double? media = (N1 == null || N2 == null) ? null : (N1 + N2) / 2;
 
 			string estado = "N/A";
-			if (media != null) estado = media >= Mat_pesquisa.getNotaMin() ? "Aprovado" : "Reprovado";
-			Console.WriteLine($"{aluno.getMatricula(),-13}|{aluno.getNome(),-38} |{aluno.getIdade(),-8} |{(N1 == null ? "N/A" : N1.Value.ToString("F2")),-6} |{(N2 == null ? "N/A" : N2.Value.ToString("F2")),-6} |{(media == null ? "N/A" : media.Value.ToString("F2")),-6} |{estado}");
+			if (media != null) estado = media >= Mat_pesquisa.NotaMin ? "Aprovado" : "Reprovado";
+			Console.WriteLine($"{aluno.Matricula,-13}|{aluno.Nome,-38} |{aluno.Idade,-8} |{(N1 == null ? "N/A" : N1.Value.ToString("F2")),-6} |{(N2 == null ? "N/A" : N2.Value.ToString("F2")),-6} |{(media == null ? "N/A" : media.Value.ToString("F2")),-6} |{estado}");
 		}
 		Console.WriteLine("-------------------------------------------------------------------------------------------------------------------");
 		Console.WriteLine("Digite qualquer coisa para voltar");
@@ -227,15 +227,15 @@ public static class Program
 		Aluno? aluno_pesquisa = SearchAluno();
 		if (aluno_pesquisa == null) return;
 
-		Matricula[] matriculas_aluno = Matriculas.GetData().Where(x => x.GetAluno().getMatricula() == aluno_pesquisa!.getMatricula()).ToArray();
+		Matricula[] matriculas_aluno = Matriculas.GetData().Where(x => x._Aluno.Matricula == aluno_pesquisa!.Matricula).ToArray();
 
-		Console.WriteLine($"Boletim de {aluno_pesquisa!.getNome()}");
+		Console.WriteLine($"Boletim de {aluno_pesquisa!.Nome}");
 		Console.WriteLine("-------------------------------------------------------------------------------------------------------------------");
 		Console.WriteLine($"{"Materia",-38} |{"Nota 1",-6} |{"Nota 2",-6} |{"Media",-6} |{"Estado"}");
 		Console.WriteLine("-------------------------------------------------------------------------------------------------------------------");
 		foreach (var matricula in matriculas_aluno)
 		{
-			Console.WriteLine($"{matricula.GetMateria().getNome(),-38} |{(matricula.GetN1() == null ? "N/A" : matricula.GetN1()!.Value.ToString("F2")),-6} |{(matricula.GetN2() == null ? "N/A" : matricula.GetN2()!.Value.ToString("F2")),-6} |{(matricula.GetMedia() == null ? "N/A" : matricula.GetMedia()!.Value.ToString("F2")),-6} |{matricula.GetEstado()}");
+			Console.WriteLine($"{matricula._Materia.Nome,-38} |{(matricula.N1 == null ? "N/A" : matricula.N1!.Value.ToString("F2")),-6} |{(matricula.N2 == null ? "N/A" : matricula.N2!.Value.ToString("F2")),-6} |{(matricula.Media == null ? "N/A" : matricula.Media!.Value.ToString("F2")),-6} |{matricula.Estado}");
 		}
 		Console.WriteLine("-------------------------------------------------------------------------------------------------------------------");
 		Console.WriteLine("Digite qualquer coisa para voltar");
@@ -293,19 +293,19 @@ public static class Program
 			Console.Write("Informe o nome do(a) aluno(a) (0 para voltar): ");
 			nome_aluno = ToTitleCase(Console.ReadLine());
 
-			if(string.IsNullOrWhiteSpace(nome_aluno))
+			if (string.IsNullOrWhiteSpace(nome_aluno))
 			{
 				Console.WriteLine("Nome deve ser preenchido!!!");
 				continue;
 			}
 
-			if(int.TryParse(nome_aluno, out int n) && nome_aluno != "0")
+			if (int.TryParse(nome_aluno, out int n) && nome_aluno != "0")
 			{
 				Console.WriteLine("O nome não deve ser um numero!");
 				continue;
 			}
 
-			if(nome_aluno.ContainsAny("#;:{}[]/?°\\|!@$%¨&*()_+=-¹²³£¢¬§´`~^ªº\'\".,<>".ToArray()))
+			if (nome_aluno.ContainsAny("#;:{}[]/?°\\|!@$%¨&*()_+=-¹²³£¢¬§´`~^ªº\'\".,<>".ToArray()))
 			{
 				Console.WriteLine("Entrada inválida");
 				continue;
@@ -336,7 +336,7 @@ public static class Program
 
 			foreach (Aluno aluno in Alunos.GetData())
 			{
-				if (aluno.getMatricula() == matricula)
+				if (aluno.Matricula == matricula)
 				{
 					Console.WriteLine("Matricula repetida!!!");
 					clone = true;
@@ -370,19 +370,19 @@ public static class Program
 			Console.Write("Informe o nome da matéria (0 para voltar): ");
 			nome_materia = ToTitleCase(Console.ReadLine());
 
-			if(string.IsNullOrWhiteSpace(nome_materia))
+			if (string.IsNullOrWhiteSpace(nome_materia))
 			{
 				Console.WriteLine("Nome deve ser preenchido!!!");
 				continue;
 			}
 
-			if(int.TryParse(nome_materia, out int n) && nome_materia != "0")
+			if (int.TryParse(nome_materia, out int n) && nome_materia != "0")
 			{
 				Console.WriteLine("O nome não deve ser um numero!");
 				continue;
 			}
 
-			if(nome_materia.ContainsAny("#;:{}[]/?°\\|!@$%¨&*()_+=-¹²³£¢¬§´`~^ªº\'\".,><".ToArray()))
+			if (nome_materia.ContainsAny("#;:{}[]/?°\\|!@$%¨&*()_+=-¹²³£¢¬§´`~^ªº\'\".,><".ToArray()))
 			{
 				Console.WriteLine("Entrada inválida");
 				continue;
@@ -412,7 +412,7 @@ public static class Program
 		{
 			codigo = (int)Parse<uint>("Informe o codigo da materia (0 para voltar): ");
 
-			Materia[] matCod = Materias.GetData().Where(m => m.getCodigo() == codigo).ToArray();
+			Materia[] matCod = Materias.GetData().Where(m => m.Codigo == codigo).ToArray();
 			if (matCod.Length == 0)
 			{
 				break;
@@ -462,10 +462,10 @@ public static class Program
 			return;
 		}
 
-		if(Matriculas.GetData().Any(x => x.GetAluno().getMatricula() == aluno_matricula.getMatricula() && x.GetMateria().getCodigo() == materia_matricula.getCodigo()))
+		if (Matriculas.GetData().Any(x => x._Aluno.Matricula == aluno_matricula.Matricula && x._Materia.Codigo == materia_matricula.Codigo))
 		{
 			Console.Clear();
-			Console.WriteLine($"{aluno_matricula.getNome()} ja possúi matrícula em {materia_matricula.getNome()}");
+			Console.WriteLine($"{aluno_matricula.Nome} ja possúi matrícula em {materia_matricula.Nome}");
 			return;
 		}
 
@@ -524,17 +524,17 @@ public static class Program
 			return;
 		}
 
-		if (!Matriculas.GetData().Any(x => x.GetAluno().getMatricula() == aluno_nota.getMatricula() && x.GetMateria().getCodigo() == materia_nota.getCodigo()))
+		if (!Matriculas.GetData().Any(x => x._Aluno.Matricula == aluno_nota.Matricula && x._Materia.Codigo == materia_nota.Codigo))
 		{
 			Console.Clear();
 			Console.WriteLine("Não ha uma matrícula para esse aluno nessa materia!");
 			return;
 		}
-		matricula_selecionada = Matriculas.GetData().First(x => x.GetAluno().getMatricula() == aluno_nota.getMatricula() && x.GetMateria().getCodigo() == materia_nota.getCodigo());
+		matricula_selecionada = Matriculas.GetData().First(x => x._Aluno.Matricula == aluno_nota.Matricula && x._Materia.Codigo == materia_nota.Codigo);
 
 		double nota;
 
-		while(true)
+		while (true)
 		{
 			nota = Parse<double>("Informe a nota: ");
 
@@ -545,17 +545,17 @@ public static class Program
 
 		if (N == 1)
 		{
-			matricula_selecionada!.SetN1(nota);
+			matricula_selecionada!.N1 = nota;
 		}
 		else if (N == 2)
 		{
-			matricula_selecionada!.SetN2(nota);
+			matricula_selecionada!.N2 = nota;
 		}
 
-		matricula_selecionada!.SetMedia((matricula_selecionada!.GetN1() + matricula_selecionada!.GetN2()) / 2);
+		matricula_selecionada!.Media = (matricula_selecionada!.N1 + matricula_selecionada!.N2) / 2;
 
-		if (matricula_selecionada.GetN1() != null && matricula_selecionada.GetN2() != null)
-			matricula_selecionada!.SetEstado(matricula_selecionada!.GetMedia() >= materia_nota.getNotaMin() ? 0 : 1);
+		if (matricula_selecionada.N1 != null && matricula_selecionada.N2 != null)
+			matricula_selecionada.SetEstado(matricula_selecionada.Media >= materia_nota.NotaMin ? 0 : 1);
 	}
 
 	/// <summary>
@@ -566,19 +566,19 @@ public static class Program
 		using (StreamWriter sw = new(Global.AlunoDataPath))
 		{
 			foreach (Aluno aluno in Alunos.GetData())
-				sw.WriteLine($"{aluno.getNome()};{aluno.getIdade()};{aluno.getMatricula()}");
+				sw.WriteLine($"{aluno.Nome};{aluno.Idade};{aluno.Matricula}");
 		}
 
 		using (StreamWriter sw = new(Global.MateriaDataPath))
 		{
 			foreach (Materia mat in Materias.GetData())
-				sw.WriteLine($"{mat.getNome()};{mat.getNotaMin()};{mat.getCodigo()}");
+				sw.WriteLine($"{mat.Nome};{mat.NotaMin};{mat.Codigo}");
 		}
 
 		using (StreamWriter sw = new(Global.MatriculaDataPath))
 		{
 			foreach (Matricula mat in Matriculas.GetData())
-				sw.WriteLine($"{mat.GetAluno().getMatricula()};{mat.GetMateria().getCodigo()};{mat.GetN1()};{mat.GetN2()};{mat.GetMedia()};{mat.GetEstado()}");
+				sw.WriteLine($"{mat._Aluno.Matricula};{mat._Materia.Codigo};{mat.N1};{mat.N2};{mat.Media};{mat.Estado}");
 		}
 	}
 }

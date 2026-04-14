@@ -26,30 +26,19 @@ namespace UCL_P3_N1
 		}
 
 		/// <summary>
-		/// Retorna o nome do aluno
+		/// Interface para o nome do aluno
 		/// </summary>
-		/// <returns></returns>
-		public string getNome() => nome;
+		public string Nome { get => nome; set => nome = value; }
 
 		/// <summary>
-		/// Altera o nome do aluno
+		/// Interface para a idade do aluno
 		/// </summary>
-		/// <param name="_nome">Variável correspondente ao novo nome</param>
-		public void setNome(string _nome) => nome = _nome;
+		public int Idade { get => idade; set => idade = value; }
 
 		/// <summary>
-		/// Retorna a idade do aluno
+		/// Interface para a matrícula do aluno
 		/// </summary>
-		/// <returns></returns>
-		public int getIdade() => idade;
-
-		/// <summary>
-		/// Altera a idade do aluno
-		/// </summary>
-		/// <param name="_idade">Variável correspondente a nova idade</param>
-		public void setIdade(int _idade) => idade = _idade;
-
-		public int getMatricula() => matricula;
+		public int Matricula { get => matricula; set => matricula = value; }
 
 		/// <summary>
 		/// Converte um Aluno em string
@@ -57,7 +46,7 @@ namespace UCL_P3_N1
 		/// <returns>Retorna o aluno em forma de string entre colchetes</returns>
 		public override string ToString()
 		{
-			return $"[{matricula}, {nome}, {idade}]";
+			return $"{matricula};{nome};{idade}";
 		}
 	}
 
@@ -80,36 +69,32 @@ namespace UCL_P3_N1
 			codigo = _codigo;
 		}
 
+		/// <summary>
+		/// Converte uma Materia em string
+		/// </summary>
+		/// <returns>Retorna o aluno em forma de string entre colchetes</returns>
+		public override string ToString()
+		{
+			return $"{nome};{nota_min};{codigo}";
+		}
 
 		/// <summary>
-		/// Obtém o nome da matéria
+		/// Interface para o nome da matéria
 		/// </summary>
 		/// <returns>Retorna o nome da matéria</returns>
-		public string getNome() => nome;
+		public string Nome { get => nome; set => nome = value; }
 
 		/// <summary>
-		/// Define o nome da matéria
-		/// </summary>
-		/// <param name="_nome">Nome da matéria</param>
-		public void setNome(string _nome) => nome = _nome;
-
-		/// <summary>
-		/// Obtém a nota mínima da matéria
+		/// Interface para a nota mínima da matéria
 		/// </summary>
 		/// <returns>Retorna a nota mínima da matéria</returns>
-		public double getNotaMin() => nota_min;
+		public double NotaMin { get => nota_min; set => nota_min = value; }
 
 		/// <summary>
-		/// Define a nota mínima da matéria
-		/// </summary>
-		/// <param name="_nota_min">Nota mínima da matéria</param>
-		public void setNotaMin(double _nota_min) => nota_min = _nota_min;
-
-		/// <summary>
-		/// Obtém o código da matéria
+		/// Interface para o código da matéria
 		/// </summary>
 		/// <returns>Retorna o código da matéria</returns>
-		public int getCodigo() => codigo;
+		public int Codigo { get => codigo; set => codigo = value; }
 	}
 
 	public class Matricula
@@ -142,52 +127,34 @@ namespace UCL_P3_N1
 		}
 
 		/// <summary>
-		/// Obtém o aluno da matrícula
+		/// Interface para o aluno da matrícula
 		/// </summary>
-		/// <returns>Retorna uma referência direta a uma instância de classe Aluno</returns>
-		public Aluno GetAluno() => aluno;
+		public Aluno _Aluno { get => aluno; set => aluno = value; }
 
 		/// <summary>
-		/// Obtém a matéria da matrícula
+		/// Interface para a matéria da matrícula
 		/// </summary>
-		/// <returns>Retorna uma referência direta a uma instância de classe Materia</returns>
-		public Materia GetMateria() => materia;
+		public Materia _Materia { get => materia; set => materia = value; }
 
 		/// <summary>
-		/// Obtém a primeira nota
+		/// Interface para a primeira nota
 		/// </summary>
-		/// <returns>Retorna a primeira nota</returns>
-		public double? GetN1() => n1;
+		public double? N1 { get => n1; set => n1 = value; }
 
 		/// <summary>
-		/// Obtém a segunda nota
+		/// Interface para a segunda nota
 		/// </summary>
-		/// <returns>Retorna a segunda nota</returns>
-		public double? GetN2() => n2;
+		public double? N2 { get => n2; set => n2 = value; }
 
 		/// <summary>
-		/// Obtém o estado
+		/// Interface para a média
 		/// </summary>
-		/// <returns>Retorna o estado</returns>
-		public string GetEstado() => estado;
+		public double? Media { get => media; set => media = value; }
 
 		/// <summary>
-		/// Obtém a média
+		/// Interface para o estado
 		/// </summary>
-		/// <returns>Retorna a média</returns>
-		public double? GetMedia() => media;
-
-		/// <summary>
-		/// Define a primeira nota
-		/// </summary>
-		/// <param name="_n1">A primeira nota</param>
-		public void SetN1(double _n1) => n1 = _n1;
-
-		/// <summary>
-		/// Define a segunda nota
-		/// </summary>
-		/// <param name="_n2">A segunda nota</param>
-		public void SetN2(double _n2) => n2 = _n2;
+		public string Estado { get => estado; }
 
 		/// <summary>
 		/// Define o estado

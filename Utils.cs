@@ -22,9 +22,9 @@ public static class Misc
 
 	public static T FilterFirst<T>(Vetor<T> original, Func<T, bool> filter)
 	{
-		foreach(T item in original.GetData())
+		foreach (T item in original.GetData())
 		{
-			if(filter(item))
+			if (filter(item))
 				return item;
 		}
 
@@ -33,9 +33,9 @@ public static class Misc
 
 	public static bool Any<T>(Vetor<T> original, Func<T, bool> filter)
 	{
-		foreach(T item in original.GetData())
+		foreach (T item in original.GetData())
 		{
-			if(filter(item))
+			if (filter(item))
 				return true;
 		}
 
@@ -45,9 +45,9 @@ public static class Misc
 	public static T[] FilterAll<T>(Vetor<T> original, Func<T, bool> filter)
 	{
 		Vetor<T> ret = new();
-		foreach(T item in original.GetData())
+		foreach (T item in original.GetData())
 		{
-			if(filter(item))
+			if (filter(item))
 				ret.Add(item);
 		}
 
@@ -67,8 +67,8 @@ public static class Misc
 		input = input.Trim();
 
 		output += char.ToUpper(input[0]);
-		for(int i = 1; i < input.Length; i++)
-			output += input[i-1] == ' ' ? char.ToUpper(input[i]) : char.ToLower(input[i]);
+		for (int i = 1; i < input.Length; i++)
+			output += input[i - 1] == ' ' ? char.ToUpper(input[i]) : char.ToLower(input[i]);
 
 		return output;
 	}
@@ -80,7 +80,7 @@ public static class Misc
 	public static void OrderAlunos(ref Vetor<Aluno> alunos)
 	{
 		Aluno[] data = alunos.GetData();
-		alunos = data.OrderBy(x => x.getNome()).ToArray();
+		alunos = data.OrderBy(x => x.Nome).ToArray();
 	}
 
 	/// <summary>
@@ -90,7 +90,7 @@ public static class Misc
 	public static void OrderMaterias(ref Vetor<Materia> materia)
 	{
 		Materia[] data = materia.GetData();
-		materia = data.OrderBy(x => x.getNome()).ToArray();
+		materia = data.OrderBy(x => x.Nome).ToArray();
 	}
 
 	/// <summary>
@@ -100,6 +100,6 @@ public static class Misc
 	public static void OrderMatriculas(ref Vetor<Matricula> matricula)
 	{
 		Matricula[] data = matricula.GetData();
-		matricula = data.OrderBy(x => x.GetMateria().getNome()).ThenBy(y => y.GetAluno().getNome()).ToArray();
+		matricula = data.OrderBy(x => x._Materia.Nome).ThenBy(y => y._Aluno.Nome).ToArray();
 	}
 }
