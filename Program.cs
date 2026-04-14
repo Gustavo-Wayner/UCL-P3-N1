@@ -44,7 +44,10 @@ public static class Program
 				"2 - Cadastrar;\n" +
 				"3 - Salvar;\n" +
 				"4 - Sair;\n" +
-				"->"
+				"->",
+
+				"Entrada inválida",
+				true
 			);
 
 			switch (input)
@@ -62,6 +65,7 @@ public static class Program
 					over = true;
 					break;
 				default:
+					Console.Clear();
 					Console.WriteLine("Entrada inválida!!!");
 					break;
 			}
@@ -82,7 +86,10 @@ public static class Program
 			"3 - Listar alunos de uma materia;\n" +
 			"4 - Listar boletim de um aluno;\n" +
 			"5 - Voltar;\n" +
-			"->"
+			"->",
+
+			"Entrada inválida",
+			true
 		);
 
 		switch (input)
@@ -103,6 +110,7 @@ public static class Program
 				Console.Clear();
 				break;
 			default:
+				Console.Clear();
 				Console.WriteLine("Entrada inválida!");
 				break;
 		}
@@ -255,7 +263,10 @@ public static class Program
 			"3 - Matricular aluno em materia;\n" +
 			"4 - Atribuir nota;\n" +
 			"5 - Voltar;\n" +
-			"->"
+			"->",
+
+			"Entrada inválida",
+			true
 		);
 
 		switch (input)
@@ -276,6 +287,7 @@ public static class Program
 				Console.Clear();
 				break;
 			default:
+				Console.Clear();
 				Console.WriteLine("Entrada inválida!");
 				break;
 		}
@@ -351,8 +363,10 @@ public static class Program
 			return;
 		}
 
+		Console.Clear();
 		Alunos.Add(new(nome_aluno, idade, matricula));
 		OrderAlunos(ref Alunos);
+		Console.WriteLine($"Aluno(a) {nome_aluno} matriculado(a) com sucesso!");
 	}
 
 	/// <summary>
@@ -425,8 +439,10 @@ public static class Program
 			return;
 		}
 
+		Console.Clear();
 		Materias.Add(new(nome_materia, nota_min, codigo));
 		OrderMaterias(ref Materias);
+		Console.WriteLine("Mstéria {nome_matéria} adicionada com sucesso!");
 	}
 
 	/// <summary>

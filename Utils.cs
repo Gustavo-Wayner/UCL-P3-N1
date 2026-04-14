@@ -9,13 +9,15 @@ public static class Misc
 	/// <param name="prompt">Mensagem a ser mostrada ao usuário antes da entrada</param>
 	/// <param name="error">Mensagem a ser mostrada em caso de entrada inválida. Valor padrão: "Entrada inválida!"</param>
 	/// <returns><typeparamref name="T"/></returns>
-	public static T Parse<T>(string prompt, string error = "Entrada inválida!")
+	public static T Parse<T>(string prompt, string error = "Entrada inválida!", bool clearConsole = false)
 	where T : IParsable<T>
 	{
 		while (true)
 		{
 			Console.Write(prompt);
 			if (T.TryParse(Console.ReadLine()!.Trim(), null, out T? output)) return output;
+			if (clearConsole)
+				Console.Clear();
 			Console.WriteLine(error);
 		}
 	}
