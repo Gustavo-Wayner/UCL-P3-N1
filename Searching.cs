@@ -17,18 +17,18 @@ public static class Searching
 			Console.Write("Digite o nome ou matrícula do(a) aluno(a) (0 para voltar): ");
 			string? entrada = ToTitleCase(Console.ReadLine());
 
-			if (entrada == "0") return null;
+			if (entrada == "0" || _Alunos.Data == null) return null;
 			if (int.TryParse(entrada, out int mat))
 			{
-				if (!_Alunos.GetData().Any(x => x.Matricula == mat))
+				if (!_Alunos.Data.Any(x => x.Matricula == mat))
 				{
 					Console.WriteLine($"Nenhum(a) aluno(a) de matrícula {mat} encontrado! Tente novamente");
 					continue;
 				}
-				pesquisa = _Alunos.GetData().First(x => x.Matricula == mat);
+				pesquisa = _Alunos.Data.First(x => x.Matricula == mat);
 				return pesquisa;
 			}
-			Aluno[] Possiveis = _Alunos.GetData().Where(x => x.Nome == entrada).ToArray();
+			Aluno[] Possiveis = _Alunos.Data.Where(x => x.Nome == entrada).ToArray();
 			if (Possiveis.Length == 0)
 			{
 				Console.WriteLine($"Nenhum(a) {entrada} encontrado(a)! Tente novamente");
@@ -48,12 +48,12 @@ public static class Searching
 						Console.WriteLine($"Nenhum(a) {entrada} de matrícula {Mat} encontrado(a)! Tente novamente");
 						continue;
 					}
-					pesquisa = _Alunos.GetData().First(x => x.Matricula == Mat);
+					pesquisa = _Alunos.Data.First(x => x.Matricula == Mat);
 					return pesquisa;
 				}
 			}
 
-			pesquisa = _Alunos.GetData().First(x => x.Nome == entrada);
+			pesquisa = _Alunos.Data.First(x => x.Nome == entrada);
 			return pesquisa;
 		}
 	}
@@ -72,18 +72,18 @@ public static class Searching
 			Console.Write("Digite o nome ou código da matéria (0 para voltar): ");
 			string? entrada = ToTitleCase(Console.ReadLine());
 
-			if (entrada == "0") return null;
+			if (entrada == "0" || _Materias.Data == null) return null;
 			if (int.TryParse(entrada, out int cod))
 			{
-				if (!_Materias.GetData().Any(x => x.Codigo == cod))
+				if (!_Materias.Data.Any(x => x.Codigo == cod))
 				{
 					Console.WriteLine($"Nenhuma matéria de código {cod} encontrada! Tente novamente");
 					continue;
 				}
-				pesquisa = _Materias.GetData().First(x => x.Codigo == cod);
+				pesquisa = _Materias.Data.First(x => x.Codigo == cod);
 				return pesquisa;
 			}
-			Materia[] Possiveis = _Materias.GetData().Where(x => x.Nome == entrada).ToArray();
+			Materia[] Possiveis = _Materias.Data.Where(x => x.Nome == entrada).ToArray();
 			if (Possiveis.Length == 0)
 			{
 				Console.WriteLine($"Nenhuma matéria de nome {entrada} encontrada! Tente novamente");
@@ -103,12 +103,12 @@ public static class Searching
 						Console.WriteLine($"Nenhuma matéria de nome {entrada} e de código {Cod} encontrada! Tente novamente");
 						continue;
 					}
-					pesquisa = _Materias.GetData().First(x => x.Codigo == Cod);
+					pesquisa = _Materias.Data?.First(x => x.Codigo == Cod);
 					return pesquisa;
 				}
 			}
 
-			pesquisa = _Materias.GetData().First(x => x.Nome == entrada);
+			pesquisa = _Materias.Data?.First(x => x.Nome == entrada);
 			return pesquisa;
 		}
 	}

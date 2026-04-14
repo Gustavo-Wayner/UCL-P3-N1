@@ -22,7 +22,7 @@ public static class Misc
 
 	public static T FilterFirst<T>(Vetor<T> original, Func<T, bool> filter)
 	{
-		foreach (T item in original.GetData())
+		foreach (T item in original.Data!)
 		{
 			if (filter(item))
 				return item;
@@ -33,7 +33,7 @@ public static class Misc
 
 	public static bool Any<T>(Vetor<T> original, Func<T, bool> filter)
 	{
-		foreach (T item in original.GetData())
+		foreach (T item in original.Data!)
 		{
 			if (filter(item))
 				return true;
@@ -44,14 +44,15 @@ public static class Misc
 
 	public static T[] FilterAll<T>(Vetor<T> original, Func<T, bool> filter)
 	{
+		if (original.Data == null) return [];
 		Vetor<T> ret = new();
-		foreach (T item in original.GetData())
+		foreach (T item in original.Data!)
 		{
 			if (filter(item))
 				ret.Add(item);
 		}
 
-		return ret.GetData();
+		return ret.Data!;
 	}
 
 	/// <summary>
@@ -79,7 +80,7 @@ public static class Misc
 	/// <param name="alunos">Vetor de alunos a ser ordenado</param>
 	public static void OrderAlunos(ref Vetor<Aluno> alunos)
 	{
-		Aluno[] data = alunos.GetData();
+		Aluno[] data = alunos.Data!;
 		alunos = data.OrderBy(x => x.Nome).ToArray();
 	}
 
@@ -89,7 +90,7 @@ public static class Misc
 	/// <param name="materia">Vetor de matérias a ser ordenado</param>
 	public static void OrderMaterias(ref Vetor<Materia> materia)
 	{
-		Materia[] data = materia.GetData();
+		Materia[] data = materia.Data!;
 		materia = data.OrderBy(x => x.Nome).ToArray();
 	}
 
@@ -99,7 +100,7 @@ public static class Misc
 	/// <param name="matricula">Vetor de matrículas a ser ordenado</param>
 	public static void OrderMatriculas(ref Vetor<Matricula> matricula)
 	{
-		Matricula[] data = matricula.GetData();
+		Matricula[] data = matricula.Data!;
 		matricula = data.OrderBy(x => x._Materia.Nome).ThenBy(y => y._Aluno.Nome).ToArray();
 	}
 }

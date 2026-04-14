@@ -126,6 +126,11 @@ namespace UCL_P3_N1
 			estado = _estado;
 		}
 
+		public override string ToString()
+		{
+			return $"{aluno.Matricula};{materia.Codigo};{n1};{n2};{media};{estado}";
+		}
+
 		/// <summary>
 		/// Interface para o aluno da matrícula
 		/// </summary>

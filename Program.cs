@@ -126,7 +126,7 @@ public static class Program
 		Console.WriteLine("------------------------------------------");
 
 
-		foreach (var aluno in Alunos.GetData())
+		foreach (var aluno in Alunos.Data!)
 		{
 			Console.WriteLine($"{aluno.Matricula,-13}|{aluno.Nome,-38}|{aluno.Idade}");
 		}
@@ -154,7 +154,7 @@ public static class Program
 		Console.WriteLine($"{"Codigo",-13}|{"Nome",-38} |{"Nota Minima"}");
 		Console.WriteLine("---------------------------------------------");
 
-		foreach (var materia in Materias.GetData())
+		foreach (var materia in Materias.Data!)
 		{
 			Console.WriteLine($"{materia.Codigo,-13}|{materia.Nome,-38}|{materia.NotaMin.ToString("F2")}");
 		}
@@ -181,7 +181,7 @@ public static class Program
 		Materia? Mat_pesquisa = SearchMateria();
 		if (Mat_pesquisa == null) return;
 
-		Matricula[] matriculas = Matriculas.GetData().Where(x => x._Materia.Codigo == Mat_pesquisa.Codigo).ToArray();
+		Matricula[] matriculas = Matriculas.Data!.Where(x => x._Materia.Codigo == Mat_pesquisa.Codigo).ToArray();
 		if (matriculas.Length == 0)
 		{
 			Console.Clear();
@@ -227,7 +227,7 @@ public static class Program
 		Aluno? aluno_pesquisa = SearchAluno();
 		if (aluno_pesquisa == null) return;
 
-		Matricula[] matriculas_aluno = Matriculas.GetData().Where(x => x._Aluno.Matricula == aluno_pesquisa!.Matricula).ToArray();
+		Matricula[] matriculas_aluno = Matriculas.Data!.Where(x => x._Aluno.Matricula == aluno_pesquisa!.Matricula).ToArray();
 
 		Console.WriteLine($"Boletim de {aluno_pesquisa!.Nome}");
 		Console.WriteLine("-------------------------------------------------------------------------------------------------------------------");
@@ -334,7 +334,7 @@ public static class Program
 			clone = false;
 			matricula = (int)Parse<uint>($"Informe um codigo de matricula para {nome_aluno} (0 para voltar): ", "Matricula deve ser um numero natural!!!");
 
-			foreach (Aluno aluno in Alunos.GetData())
+			foreach (Aluno aluno in Alunos.Data!)
 			{
 				if (aluno.Matricula == matricula)
 				{
@@ -412,7 +412,7 @@ public static class Program
 		{
 			codigo = (int)Parse<uint>("Informe o codigo da materia (0 para voltar): ");
 
-			Materia[] matCod = Materias.GetData().Where(m => m.Codigo == codigo).ToArray();
+			Materia[] matCod = Materias.Data!.Where(m => m.Codigo == codigo).ToArray();
 			if (matCod.Length == 0)
 			{
 				break;
@@ -462,7 +462,7 @@ public static class Program
 			return;
 		}
 
-		if (Matriculas.GetData().Any(x => x._Aluno.Matricula == aluno_matricula.Matricula && x._Materia.Codigo == materia_matricula.Codigo))
+		if (Matriculas.Data!.Any(x => x._Aluno.Matricula == aluno_matricula.Matricula && x._Materia.Codigo == materia_matricula.Codigo))
 		{
 			Console.Clear();
 			Console.WriteLine($"{aluno_matricula.Nome} ja possúi matrícula em {materia_matricula.Nome}");
@@ -524,13 +524,13 @@ public static class Program
 			return;
 		}
 
-		if (!Matriculas.GetData().Any(x => x._Aluno.Matricula == aluno_nota.Matricula && x._Materia.Codigo == materia_nota.Codigo))
+		if (!Matriculas.Data!.Any(x => x._Aluno.Matricula == aluno_nota.Matricula && x._Materia.Codigo == materia_nota.Codigo))
 		{
 			Console.Clear();
 			Console.WriteLine("Não ha uma matrícula para esse aluno nessa materia!");
 			return;
 		}
-		matricula_selecionada = Matriculas.GetData().First(x => x._Aluno.Matricula == aluno_nota.Matricula && x._Materia.Codigo == materia_nota.Codigo);
+		matricula_selecionada = Matriculas.Data!.First(x => x._Aluno.Matricula == aluno_nota.Matricula && x._Materia.Codigo == materia_nota.Codigo);
 
 		double nota;
 
@@ -565,19 +565,19 @@ public static class Program
 	{
 		using (StreamWriter sw = new(Global.AlunoDataPath))
 		{
-			foreach (Aluno aluno in Alunos.GetData())
+			foreach (Aluno aluno in Alunos.Data!)
 				sw.WriteLine($"{aluno.Nome};{aluno.Idade};{aluno.Matricula}");
 		}
 
 		using (StreamWriter sw = new(Global.MateriaDataPath))
 		{
-			foreach (Materia mat in Materias.GetData())
+			foreach (Materia mat in Materias.Data!)
 				sw.WriteLine($"{mat.Nome};{mat.NotaMin};{mat.Codigo}");
 		}
 
 		using (StreamWriter sw = new(Global.MatriculaDataPath))
 		{
-			foreach (Matricula mat in Matriculas.GetData())
+			foreach (Matricula mat in Matriculas.Data!)
 				sw.WriteLine($"{mat._Aluno.Matricula};{mat._Materia.Codigo};{mat.N1};{mat.N2};{mat.Media};{mat.Estado}");
 		}
 	}

@@ -8,6 +8,12 @@ public class Vetor<T>
 {
 	//dados do vetor
 	private T[]? data;
+
+	/// <summary>
+	/// Retorna a array interna da class vetor que guarda seus dados
+	/// </summary>
+	public T[]? Data => data;
+
 	public Vetor()
 	{
 		data = new T[0];
@@ -29,11 +35,6 @@ public class Vetor<T>
 			return 0;
 		}
 	}
-
-	/// <summary>
-	/// Retorna a array interna da class vetor que guarda seus dados
-	/// </summary>
-	public T[] GetData() => data!;
 
 	/// <summary>
 	/// Adiciona um elemento ao final do vetor

@@ -136,8 +136,8 @@ public static class DatRead
 	/// <returns>Vetor de matrículas</returns>
 	public static Vetor<Matricula> LerMatriculasDoDat()
 	{
-		Materia[] materias = Program._Materias.GetData();
-		Aluno[] alunos = Program._Alunos.GetData();
+		Materia[] materias = Program._Materias.Data!;
+		Aluno[] alunos = Program._Alunos.Data!;
 
 		int lineNumber = 1;
 		Vetor<Matricula> mat = new Vetor<Matricula>();
