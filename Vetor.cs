@@ -3,26 +3,26 @@ namespace UCL_P3_N1;
 /// <summary>
 /// Classe para criar uma lista capaz de se expandir e diminuir dinâmicamente
 /// </summary>
-/// <typeparam name="T"></typeparam>
-public class Vetor<T>
+/// <typeparam name="Tdados"></typeparam>
+public class Vetor<Tdados>
 {
 	//dados do vetor
-	private T[]? data;
+	private Tdados[]? data;
 
 	/// <summary>
 	/// Retorna a array interna da class vetor que guarda seus dados
 	/// </summary>
-	public T[]? Data => data;
+	public Tdados[]? Data => data;
 
 	public Vetor()
 	{
-		data = new T[0];
+		data = new Tdados[0];
 	}
 
-	public Vetor(T[] _data) => data = _data;
+	public Vetor(Tdados[] _data) => data = _data;
 
 	//Imprementacão de inicialização via coleções (chaves {x, y, z...})
-	public static implicit operator Vetor<T>(T[] array) => new Vetor<T>(array);
+	public static implicit operator Vetor<Tdados>(Tdados[] array) => new Vetor<Tdados>(array);
 
 	/// <summary>
 	/// Retorna o cumprimento do vetor e 0 se for nulo ( ou tiver cumprimento 0 )
@@ -40,9 +40,9 @@ public class Vetor<T>
 	/// Adiciona um elemento ao final do vetor
 	/// </summary>
 	/// <param name="element">Elmento a ser adicionado</param>
-	public void Add(T element)
+	public void Add(Tdados element)
 	{
-		T[] copy = new T[Len + 1];
+		Tdados[] copy = new Tdados[Len + 1];
 		for (int i = 0; i < Len; i++)
 		{
 			copy[i] = data![i];
@@ -80,7 +80,7 @@ public class Vetor<T>
 	{
 		if (index < 0 || index >= Len) throw new IndexOutOfRangeException();
 
-		T[] result = new T[Len - 1];
+		Tdados[] result = new Tdados[Len - 1];
 
 		int j = 0;
 		for (int i = 0; j < Len - 1; i = ++j)
@@ -105,9 +105,9 @@ public class Vetor<T>
 	/// Implementação do operador [] no vetor
 	/// </summary>
 	/// <param name="i">O indice a ser retornado / alterado</param>
-	/// <returns><typeparamref name="T"/></returns>
+	/// <returns><typeparamref name="Tdados"/></returns>
 	/// <exception cref="IndexOutOfRangeException">Retorna erro para indice fora de alcançe</exception>
-	public T this[int i]
+	public Tdados this[int i]
 	{
 		get
 		{

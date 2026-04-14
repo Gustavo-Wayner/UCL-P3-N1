@@ -5,26 +5,33 @@ public static class Misc
 	/// <summary>
 	/// Converte uma entrada do usuário para qualquer tipo T que implmente a função TryParse()
 	/// </summary>
-	/// <typeparam name="T"></typeparam>
+	/// <typeparam name="TParsear"></typeparam>
 	/// <param name="prompt">Mensagem a ser mostrada ao usuário antes da entrada</param>
 	/// <param name="error">Mensagem a ser mostrada em caso de entrada inválida. Valor padrão: "Entrada inválida!"</param>
-	/// <returns><typeparamref name="T"/></returns>
-	public static T Parse<T>(string prompt, string error = "Entrada inválida!", bool clearConsole = false)
-	where T : IParsable<T>
+	/// <returns><typeparamref name="TParsear"/></returns>
+	public static TParsear Parse<TParsear>(string prompt, string error = "Entrada inválida!", bool clearConsole = false)
+	where TParsear : IParsable<TParsear>
 	{
 		while (true)
 		{
 			Console.Write(prompt);
-			if (T.TryParse(Console.ReadLine()!.Trim(), null, out T? output)) return output;
+			if (TParsear.TryParse(Console.ReadLine()!.Trim(), null, out TParsear? output)) return output;
 			if (clearConsole)
 				Console.Clear();
 			Console.WriteLine(error);
 		}
 	}
 
-	public static T FilterFirst<T>(T[] original, Func<T, bool> filter)
+	/// <summary>
+	/// Coleta o primeiro valore de um Vetor que cumprir com um dado critério
+	/// </summary>
+	/// <typeparam name="TFiltrar"></typeparam>
+	/// <param name="original">Vetor base</param>
+	/// <param name="filter">Critério</param>
+	/// <returns>O vetor com apénas os itens que cumprem o critério</returns>
+	public static TFiltrar FilterFirst<TFiltrar>(TFiltrar[] original, Func<TFiltrar, bool> filter)
 	{
-		foreach (T item in original)
+		foreach (TFiltrar item in original)
 		{
 			if (filter(item))
 				return item;
@@ -33,9 +40,16 @@ public static class Misc
 		throw new Exception("NenhumItemPresenteQueCumpraOsRequisitos");
 	}
 
-	public static T FilterFirst<T>(Vetor<T> original, Func<T, bool> filter)
+	/// <summary>
+	/// Coleta o primeiro valore de um Vetor que cumprir com um dado critério
+	/// </summary>
+	/// <typeparam name="TFiltrar"></typeparam>
+	/// <param name="original">Vetor base</param>
+	/// <param name="filter">Critério</param>
+	/// <returns>O vetor com apénas os itens que cumprem o critério</returns>
+	public static TFiltrar FilterFirst<TFiltrar>(Vetor<TFiltrar> original, Func<TFiltrar, bool> filter)
 	{
-		foreach (T item in original.Data!)
+		foreach (TFiltrar item in original.Data!)
 		{
 			if (filter(item))
 				return item;
@@ -44,9 +58,16 @@ public static class Misc
 		throw new Exception("NenhumItemPresenteQueCumpraOsRequisitos");
 	}
 
-	public static bool Any<T>(T[] original, Func<T, bool> filter)
+	/// <summary>
+	/// Pergunta se há algum objeto no vetor que cumpra com um dado critério
+	/// </summary>
+	/// <typeparam name="TFiltrar"></typeparam>
+	/// <param name="original">Vetor base</param>
+	/// <param name="filter">Critério</param>
+	/// <returns>true se houver, do contrário false</returns>
+	public static bool Any<TFiltrar>(TFiltrar[] original, Func<TFiltrar, bool> filter)
 	{
-		foreach (T item in original)
+		foreach (TFiltrar item in original)
 		{
 			if (filter(item))
 				return true;
@@ -55,9 +76,16 @@ public static class Misc
 		return false;
 	}
 
-	public static bool Any<T>(Vetor<T> original, Func<T, bool> filter)
+	/// <summary>
+	/// Pergunta se há algum objeto no vetor que cumpra com um dado critério
+	/// </summary>
+	/// <typeparam name="TFiltrar"></typeparam>
+	/// <param name="original">Vetor base</param>
+	/// <param name="filter">Critério</param>
+	/// <returns>true se houver, do contrário false</returns>
+	public static bool Any<TFiltrar>(Vetor<TFiltrar> original, Func<TFiltrar, bool> filter)
 	{
-		foreach (T item in original.Data!)
+		foreach (TFiltrar item in original.Data!)
 		{
 			if (filter(item))
 				return true;
@@ -66,11 +94,18 @@ public static class Misc
 		return false;
 	}
 
-	public static T[] FilterAll<T>(T[] original, Func<T, bool> filter)
+	/// <summary>
+	/// Coleta todos os valores de um Vetor que cumprirem com um dado critério
+	/// </summary>
+	/// <typeparam name="TFiltrar"></typeparam>
+	/// <param name="original">Vetor base</param>
+	/// <param name="filter">Critério</param>
+	/// <returns>O vetor com apénas os itens que cumprem o critério</returns>
+	public static Filtrar[] FilterAll<Filtrar>(Filtrar[] original, Func<Filtrar, bool> filter)
 	{
 		if (original == null) return [];
-		Vetor<T> ret = new();
-		foreach (T item in original)
+		Vetor<Filtrar> ret = new();
+		foreach (Filtrar item in original)
 		{
 			if (filter(item))
 				ret.Add(item);
@@ -79,11 +114,18 @@ public static class Misc
 		return ret.Data!;
 	}
 
-	public static T[] FilterAll<T>(Vetor<T> original, Func<T, bool> filter)
+	/// <summary>
+	/// Coleta todos os valores de um Vetor que cumprirem com um dado critério
+	/// </summary>
+	/// <typeparam name="TFiltrar"></typeparam>
+	/// <param name="original">Vetor base</param>
+	/// <param name="filter">Critério</param>
+	/// <returns></returns>
+	public static TFiltrar[] FilterAll<TFiltrar>(Vetor<TFiltrar> original, Func<TFiltrar, bool> filter)
 	{
 		if (original == null) return [];
-		Vetor<T> ret = new();
-		foreach (T item in original.Data!)
+		Vetor<TFiltrar> ret = new();
+		foreach (TFiltrar item in original.Data!)
 		{
 			if (filter(item))
 				ret.Add(item);
